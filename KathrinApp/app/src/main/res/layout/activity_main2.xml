@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.Main2ActivityAbstract">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar" />
+
+    <com.stonewar.appname.googlecode.SlidingTabLayout
+        android:id="@+id/tabs"
+        android:layout_below="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:background="@color/colorPrimary" />
+
+        <android.support.v4.view.ViewPager
+            android:layout_below="@+id/tabs"
+            android:id="@+id/view_pager"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+
+</RelativeLayout>
