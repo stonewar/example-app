@@ -29,7 +29,7 @@
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:text="Select time interval in seconds:"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@android:color/black" />
 
             <LinearLayout
@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:text="Playing"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <com.stonewar.appname.custom.component.NumberPicker
                         android:id="@+id/numberPicker_play_interval"
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:text="Stoping"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <com.stonewar.appname.custom.component.NumberPicker
                         android:id="@+id/numberPicker_stop_interval"
@@ -93,7 +93,7 @@
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="Convertion in minutes:"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@android:color/black" />
 
 
@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:text="Playing"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/text_converted_playing_time"
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:text="0"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
@@ -137,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:text="Stoping"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/text_converted_stopping_time"
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:text="0"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:layout_gravity="center_horizontal" />
             </LinearLayout>
 

@@ -7,7 +7,7 @@
     <color name="white">@android:color/white</color>
 
     <color name="media_play_bar">#B3ffffff</color>
-    <color name="media_play_bar1">#B3000000</color>
+    <color name="media_play_bar1">#4D000000</color>
 
     <!--<color name="d">#8C3F51B5</color>-->
 </resources>
