@@ -8,7 +8,6 @@
         android:id="@+id/tab_title_image_song"
         android:layout_width="64dp"
         android:layout_height="66dp"
-        android:src="@mipmap/ic_launcher"
         android:paddingLeft="16dp"/>
 
 
@@ -37,11 +36,12 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/tab_title_playing_image"
+        android:id="@+id/tab_title_equalizer_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:paddingRight="20dp"/>
 
 </RelativeLayout>

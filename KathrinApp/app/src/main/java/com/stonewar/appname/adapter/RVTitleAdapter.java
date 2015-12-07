@@ -1,7 +1,11 @@
 package com.stonewar.appname.adapter;
 
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.stonewar.appname.R;
@@ -17,6 +21,8 @@ import java.util.List;
  */
 public class RVTitleAdapter extends AbstractRVAdapter {
 
+    private ImageView lastSelectedRow;
+
     public RVTitleAdapter(List<Song> songs, int resource, ISongCallBack songCallBack) {
         super(songs, resource, songCallBack);
     }
@@ -26,7 +32,7 @@ public class RVTitleAdapter extends AbstractRVAdapter {
         Song song = songs.get(position);
         holder.setSelectedSong(song);
         holder.getImage().setImageBitmap(song.getArtWork());
-        ((TitleViewHolder)holder).title.setText(song.getTitle());
+        ((TitleViewHolder) holder).title.setText(song.getTitle());
         holder.getAuthor().setText(song.getAuthor());
     }
 
@@ -37,10 +43,12 @@ public class RVTitleAdapter extends AbstractRVAdapter {
 
     private class TitleViewHolder extends AbstractViewHolder {
         public TextView title;
+        public ImageView equalizer;
 
         public TitleViewHolder(View vRow) {
             super(vRow);
             title = (TextView) vRow.findViewById(R.id.tab_title_text_title_song);
+            equalizer = (ImageView) vRow.findViewById(R.id.tab_title_equalizer_image);
         }
 
         @Override
@@ -55,7 +63,16 @@ public class RVTitleAdapter extends AbstractRVAdapter {
 
         @Override
         public void onClick(View v) {
-            Log.d("TAAA", "" + selectedSong.getTitle());
+            songCallBack.selectedSong(selectedSong);
+            if (lastSelectedRow != null) {
+                ((AnimationDrawable) lastSelectedRow.getBackground()).stop();
+                lastSelectedRow.setVisibility(View.GONE);
+            }
+            equalizer.setVisibility(View.VISIBLE);
+            equalizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+            equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
+            ((AnimationDrawable) equalizer.getBackground()).start();
+            lastSelectedRow = equalizer;
         }
     }
 }

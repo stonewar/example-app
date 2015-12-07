@@ -11,10 +11,12 @@ import com.stonewar.appname.R;
 import com.stonewar.appname.adapter.RVAlbumAdapter;
 import com.stonewar.appname.adapter.RVArtistAdapter;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
+import com.stonewar.appname.common.ISongCallBack;
 import com.stonewar.appname.manager.SongManager;
 import com.stonewar.appname.model.Song;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by yandypiedra on 05.12.15.
@@ -25,18 +27,13 @@ public class AlbumFragment extends AbstractViewPagerFragment {
 
     @Override
     public void executeThread() {
-        new AlbumLoader().execute();
+       new AlbumLoader().execute();
     }
 
     @Override
     public CharSequence getTitle() {
         //TODO put it in the resources for internationalization
         return "Album";
-    }
-
-    @Override
-    public void selectedSong(Song song) {
-        Log.d(TAG, "Selected Song :" + song.getId() + ", " + song.getAuthor() + ", " + song.getTitle());
     }
 
     private class AlbumLoader extends AsyncTask<Void, Void, List<Song>> {

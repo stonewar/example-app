@@ -1,4 +1,5 @@
 package com.stonewar.appname.fragment;
+
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import com.stonewar.appname.manager.SongManager;
 import com.stonewar.appname.model.Song;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by yandypiedra on 04.12.15.
@@ -32,11 +34,6 @@ public class TitleFragment extends AbstractViewPagerFragment {
     public CharSequence getTitle() {
         //TODO
         return "Title";
-    }
-
-    @Override
-    public void selectedSong(Song song) {
-        Log.d(TAG, "Selected Song :" + song.getId() + ", " + song.getAuthor() + ", " + song.getTitle());
     }
 
     private class SongsLoader extends AsyncTask<Void, Void, List<Song>> {
@@ -61,5 +58,4 @@ public class TitleFragment extends AbstractViewPagerFragment {
             recyclerView.setLayoutManager(layoutManager);
         }
     }
-
 }

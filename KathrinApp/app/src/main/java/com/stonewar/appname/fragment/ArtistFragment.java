@@ -14,6 +14,7 @@ import com.stonewar.appname.manager.SongManager;
 import com.stonewar.appname.model.Song;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by yandypiedra on 04.12.15.
@@ -24,18 +25,13 @@ public class ArtistFragment extends AbstractViewPagerFragment {
 
     @Override
     public void executeThread() {
-        new ArtistLoader().execute();
+          new ArtistLoader().execute();
     }
 
     @Override
     public CharSequence getTitle() {
         //TODO put it in the resources for internationalization
         return "Artist";
-    }
-
-    @Override
-    public void selectedSong(Song song) {
-        Log.d(TAG, "Selected Song :"+song.getId() +", "+song.getAuthor()+", "+song.getTitle());
     }
 
     private class ArtistLoader extends AsyncTask<Void, Void, List<Song>> {

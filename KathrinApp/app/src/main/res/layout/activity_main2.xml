@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.Main2ActivityAbstract">
+    tools:context=".activity.Main2Activity">
 
     <include
         android:id="@+id/tool_bar"
@@ -11,16 +11,34 @@
 
     <com.stonewar.appname.googlecode.SlidingTabLayout
         android:id="@+id/tabs"
-        android:layout_below="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:background="@color/colorPrimary" />
+        android:layout_below="@+id/tool_bar"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp" />
 
-        <android.support.v4.view.ViewPager
-            android:layout_below="@+id/tabs"
-            android:id="@+id/view_pager"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_above="@+id/play_back_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabs" />
+
+    <LinearLayout
+        android:id="@+id/play_back_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="6dp"
+        android:visibility="gone">
+
+        <fragment
+            android:id="@+id/play_back_Fragment"
+            class="com.stonewar.appname.fragment.PlayBackFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_play_back"></fragment>
+    </LinearLayout>
 
 </RelativeLayout>

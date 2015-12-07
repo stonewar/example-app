@@ -7,6 +7,8 @@ public class Constant {
 
     public static final String SELECTED_SONGS = "SELECTED_SONGS";
 
+    public static final String SONG_CALL_BACK = "SONG_CALL_BACK";
+
     public static final String IS_TIME_INTERVAL_PLAYING_DATA = "IS_TIME_INTERVAL_PLAYING_DATA";
     public static final String DATA_VALUE = "DATA_VALUE";
     public static final String STOPPING_TIME_INTERVAL = "STOPPING_TIME_INTERVAL";

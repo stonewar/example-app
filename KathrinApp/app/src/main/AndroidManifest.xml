@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--<activity-->
-        <!--android:name=".activity.MainActivityAbstract"-->
+        <!--android:name=".activity.MainActivity"-->
         <!--android:launchMode="singleTask">-->
         <!--<intent-filter>-->
         <!--<action android:name="android.intent.action.MAIN" />-->
@@ -21,15 +21,15 @@
         <!--</activity>-->
         <!--<activity-->
         <!--android:name=".activity.TimeIntervalActivityAbstract"-->
-        <!--android:parentActivityName=".activity.MainActivityAbstract" />-->
-        <!--<activity android:name=".activity.MediaPlayerActivityAbstract" />-->
+        <!--android:parentActivityName=".activity.MainActivity" />-->
+        <!--<activity android:name=".activity.MediaPlayerActivity" />-->
 
-        <!--<service-->
-        <!--android:name=".service.IMediaPlayerService"-->
-        <!--android:exported="false" />-->
+        <service
+            android:name=".service.IMediaPlayerService"
+            android:exported="false" />
 
         <activity
-            android:name=".activity.Main2ActivityAbstract"
+            android:name=".activity.Main2Activity"
             android:label="@string/title_activity_main2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -93,7 +93,7 @@ public class TimeIntervalActivityAbstract extends AbstractBaseActivity {
     }
 
     public void accept(View view){
-        Intent intent = new Intent(this, MediaPlayerActivityAbstract.class);
+        Intent intent = new Intent(this, MediaPlayerActivity.class);
         intent.putExtra(Constant.SELECTED_SONGS, getIntent().getParcelableArrayListExtra(Constant.SELECTED_SONGS));
         intent.putExtra(Constant.PLAYING_TIME_INTERVAL, playingTimeInterval);
         intent.putExtra(Constant.STOPPING_TIME_INTERVAL, stoppingTimeInterval);

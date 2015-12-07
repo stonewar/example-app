@@ -19,6 +19,8 @@ public interface IMediaPlayerController {
 
     boolean isPlaying();
 
+    void stop();
+
 //    void setSongDuration(int finalTime);
 //
 //    void setSongProgress(int timeElapsed);

@@ -20,12 +20,12 @@ import com.stonewar.appname.util.Constant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivityAbstract extends AbstractBaseActivity {
+public class MainActivity extends AbstractBaseActivity {
 
     private ListView listSongs;
     private List<Song> songs;
 
-    private static final String TAG = MainActivityAbstract.class.getName();
+    private static final String TAG = MainActivity.class.getName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

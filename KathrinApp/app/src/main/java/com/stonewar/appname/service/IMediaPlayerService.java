@@ -23,7 +23,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.stonewar.appname.R;
-import com.stonewar.appname.activity.MainActivityAbstract;
+import com.stonewar.appname.activity.MainActivity;
 import com.stonewar.appname.broadcast.MediaPlayerBroadCastReceiver;
 import com.stonewar.appname.common.IMediaPlayerController;
 import com.stonewar.appname.manager.SongManager;
@@ -113,7 +113,7 @@ public class IMediaPlayerService extends Service implements IMediaPlayerControll
 
     @Override
     public void play() {
-        invalidate();
+        release();
         Uri uri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currentSong.getId());
         try {
             if (mediaPlayer.getCurrentState() != AppMediaPlayer.STATE_PAUSED) {
@@ -133,7 +133,7 @@ public class IMediaPlayerService extends Service implements IMediaPlayerControll
     @Override
     public void pause() {
         mediaPlayer.pause();
-        invalidate();
+        release();
         //TODO
         stopForeground(true);
         ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(NOTIFY_ID, createNotification());
@@ -163,6 +163,11 @@ public class IMediaPlayerService extends Service implements IMediaPlayerControll
         handleSongChanged();
         mediaPlayer.stop();
         play();
+    }
+
+    @Override
+    public void stop(){
+        mediaPlayer.stop();
     }
 
     @Override
@@ -226,7 +231,7 @@ public class IMediaPlayerService extends Service implements IMediaPlayerControll
         message.sendToTarget();
     }
 
-    private void invalidate() {
+    private void release() {
         if (futureCurrentPositionDuration != null) {
             futureCurrentPositionDuration.cancel(true);
         }
@@ -303,7 +308,7 @@ public class IMediaPlayerService extends Service implements IMediaPlayerControll
     }
 
     private PendingIntent getNotificationContentIntent() {
-        Intent mainActivity = new Intent(this, MainActivityAbstract.class);
+        Intent mainActivity = new Intent(this, MainActivity.class);
         mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return PendingIntent.getActivity(this, 0, mainActivity, PendingIntent.FLAG_UPDATE_CURRENT);
     }

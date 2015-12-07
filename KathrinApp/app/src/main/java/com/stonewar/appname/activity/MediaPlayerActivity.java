@@ -27,9 +27,9 @@ import com.stonewar.appname.util.Util;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MediaPlayerActivityAbstract extends AbstractBaseActivity implements ServiceConnection {
+public class MediaPlayerActivity extends AbstractBaseActivity implements ServiceConnection {
 
-    private static final String TAG = MediaPlayerActivityAbstract.class.getName();
+    private static final String TAG = MediaPlayerActivity.class.getName();
 
     //play_toolbar
     private ImageView imageSong;
@@ -94,9 +94,9 @@ public class MediaPlayerActivityAbstract extends AbstractBaseActivity implements
                 final int mediaPlayerState = playerService.getMediaPlayerState();
                 if (mediaPlayerState != AppMediaPlayer.STATE_STARTED) {
                     playerService.play();
-                    ((ImageButton) view).setImageBitmap(Util.getBitmap(MediaPlayerActivityAbstract.this, R.mipmap.ic_pause_circle_filled_black_48dp));
+                    ((ImageButton) view).setImageBitmap(Util.getBitmap(MediaPlayerActivity.this, R.mipmap.ic_pause_circle_filled_black_48dp));
                 } else {
-                    ((ImageButton) view).setImageBitmap(Util.getBitmap(MediaPlayerActivityAbstract.this, R.mipmap.ic_play_circle_filled_black_48dp));
+                    ((ImageButton) view).setImageBitmap(Util.getBitmap(MediaPlayerActivity.this, R.mipmap.ic_play_circle_filled_black_48dp));
                     playerService.pause();
                 }
             }
@@ -197,9 +197,9 @@ public class MediaPlayerActivityAbstract extends AbstractBaseActivity implements
 
     public void updatePlaybackButton(String action) {
         if (action.equals(Constant.ACTION_SONG_PAUSE)) {
-            playButton.setImageBitmap(Util.getBitmap(MediaPlayerActivityAbstract.this, R.mipmap.ic_play_circle_filled_black_48dp));
+            playButton.setImageBitmap(Util.getBitmap(MediaPlayerActivity.this, R.mipmap.ic_play_circle_filled_black_48dp));
         } else {
-            playButton.setImageBitmap(Util.getBitmap(MediaPlayerActivityAbstract.this, R.mipmap.ic_pause_circle_filled_black_48dp));
+            playButton.setImageBitmap(Util.getBitmap(MediaPlayerActivity.this, R.mipmap.ic_pause_circle_filled_black_48dp));
         }
     }
 
