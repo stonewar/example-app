@@ -1,12 +1,11 @@
 package com.stonewar.appname.adapter;
 
-import android.util.Log;
 import android.view.View;
 
 import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractRVAdapter;
 import com.stonewar.appname.common.AbstractViewHolder;
-import com.stonewar.appname.common.ISongCallBack;
+import com.stonewar.appname.common.IRowViewPagerInteractionListener;
 import com.stonewar.appname.model.Song;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public class RVArtistAdapter extends AbstractRVAdapter {
 
-    public RVArtistAdapter(List<Song> songs, int resource, ISongCallBack songCallBack) {
+    public RVArtistAdapter(List<Song> songs, int resource, IRowViewPagerInteractionListener songCallBack) {
         super(songs, resource, songCallBack);
     }
 
@@ -51,8 +50,8 @@ public class RVArtistAdapter extends AbstractRVAdapter {
 
         @Override
         public void onClick(View v) {
-//            Log.d("TAAA", ""+selectedSong.getTitle());
-            songCallBack.selectedSong(selectedSong);
+//            Log.d("TAAA", ""+selectedView.getTitle());
+            songCallBack.selectedView(v, selectedSong);
         }
     }
 

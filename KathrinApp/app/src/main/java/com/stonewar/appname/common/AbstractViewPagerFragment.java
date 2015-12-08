@@ -2,7 +2,6 @@ package com.stonewar.appname.common;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,43 +10,41 @@ import android.view.ViewGroup;
 
 import com.stonewar.appname.R;
 import com.stonewar.appname.model.Song;
-import com.stonewar.appname.util.Constant;
 
 import java.util.List;
 
 /**
  * Created by yandypiedra on 05.12.15.
  */
-public abstract class AbstractViewPagerFragment extends Fragment implements ISongCallBack {
+public abstract class AbstractViewPagerFragment extends Fragment implements IRowViewPagerInteractionListener {
 
     protected RecyclerView recyclerView;
     protected AbstractRVAdapter rvAdapter;
     protected List<Song> songs;
     protected RecyclerView.LayoutManager layoutManager;
-    protected ISongCallBack iSongCallBack;
+    protected IRowViewPagerInteractionListener iRowViewPagerCallBack;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof ISongCallBack) {
-            iSongCallBack = (ISongCallBack) context;
+        if (context instanceof IRowViewPagerInteractionListener) {
+            iRowViewPagerCallBack = (IRowViewPagerInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement ISongCallBack");
+                    + " must implement IRowViewPagerInteractionListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        iSongCallBack = null;
+        iRowViewPagerCallBack = null;
     }
 
     @Override
-    public void selectedSong(Song song) {
-        iSongCallBack.selectedSong(song);
+    public void selectedView(View v, Song song){
+        iRowViewPagerCallBack.selectedView(v, song);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

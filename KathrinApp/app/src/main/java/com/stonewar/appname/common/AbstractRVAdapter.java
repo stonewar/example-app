@@ -14,11 +14,11 @@ import java.util.List;
  */
 public abstract class AbstractRVAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 
-    protected ISongCallBack songCallBack;
+    protected IRowViewPagerInteractionListener songCallBack;
     protected List<Song> songs;
     protected int resource;
 
-    public AbstractRVAdapter(List<Song> songs, int resource, ISongCallBack songCallBack) {
+    public AbstractRVAdapter(List<Song> songs, int resource, IRowViewPagerInteractionListener songCallBack) {
         this.songs = songs;
         this.resource  = resource;
         this.songCallBack = songCallBack;

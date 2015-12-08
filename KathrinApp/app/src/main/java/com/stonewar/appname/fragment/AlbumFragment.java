@@ -5,18 +5,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
 
 import com.stonewar.appname.R;
 import com.stonewar.appname.adapter.RVAlbumAdapter;
-import com.stonewar.appname.adapter.RVArtistAdapter;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
-import com.stonewar.appname.common.ISongCallBack;
 import com.stonewar.appname.manager.SongManager;
 import com.stonewar.appname.model.Song;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by yandypiedra on 05.12.15.

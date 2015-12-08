@@ -12,12 +12,13 @@ import com.stonewar.appname.R;
 
 public class PlayBackFragment extends Fragment {
 
-      private IPlayBackButtonListener playBackButtonListener;
+      private IPlayBackFragmentInteractionListener playBackButtonListener;
       private ImageView artwork, playback;
       private TextView title, author;
 
-    public interface IPlayBackButtonListener{
-        void playBackButtonClicked();
+    public interface IPlayBackFragmentInteractionListener {
+        void onPlayBackButtonClicked();
+        void onViewClicked(View v);
     }
 
     @Override
@@ -25,6 +26,12 @@ public class PlayBackFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_play_back, container, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playBackButtonListener.onViewClicked(v);
+            }
+        });
         artwork = (ImageView) view.findViewById(R.id.frag_playback_image_song);
         title = (TextView) view.findViewById(R.id.frag_playback_text_title_song);
         author = (TextView) view.findViewById(R.id.frag_playback_text_author_song);
@@ -32,7 +39,7 @@ public class PlayBackFragment extends Fragment {
         playback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playBackButtonListener.playBackButtonClicked();
+                playBackButtonListener.onPlayBackButtonClicked();
             }
         });
         return view;
@@ -57,11 +64,11 @@ public class PlayBackFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IPlayBackButtonListener) {
-            playBackButtonListener = (IPlayBackButtonListener) context;
+        if (context instanceof IPlayBackFragmentInteractionListener) {
+            playBackButtonListener = (IPlayBackFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement IPlayBackButtonListener");
+                    + " must implement IPlayBackFragmentInteractionListener");
         }
     }
 

@@ -43,7 +43,8 @@ import java.util.concurrent.TimeUnit;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  */
-public class IMediaPlayerService extends Service implements IMediaPlayerController, OnCompletionListener, OnErrorListener, OnPreparedListener {
+public class IMediaPlayerService extends Service implements IMediaPlayerController,
+        OnCompletionListener, OnErrorListener, OnPreparedListener {
 
     private static final String TAG = IMediaPlayerService.class.getName();
 

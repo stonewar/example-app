@@ -1,9 +1,11 @@
 package com.stonewar.appname.activity;
-
+import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -11,25 +13,28 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-
+import android.graphics.drawable.AnimationDrawable;
 import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractBaseActivity;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
 import com.stonewar.appname.adapter.ViewPagerAdapter;
-import com.stonewar.appname.common.ISongCallBack;
+import com.stonewar.appname.common.IRowViewPagerInteractionListener;
+import com.stonewar.appname.fragment.MediaPlayerFragment;
 import com.stonewar.appname.fragment.PlayBackFragment;
 import com.stonewar.appname.googlecode.SlidingTabLayout;
+import com.stonewar.appname.manager.FragmentManager;
 import com.stonewar.appname.model.Song;
 import com.stonewar.appname.service.IMediaPlayerService;
 import com.stonewar.appname.util.AppMediaPlayer;
 import com.stonewar.appname.util.Constant;
 import com.stonewar.appname.util.Factory;
 import com.stonewar.appname.util.Util;
-
 import java.util.List;
 
-public class Main2Activity extends AbstractBaseActivity implements ISongCallBack, ServiceConnection, PlayBackFragment.IPlayBackButtonListener {
+public class Main2Activity extends AbstractBaseActivity implements IRowViewPagerInteractionListener,
+        ServiceConnection, PlayBackFragment.IPlayBackFragmentInteractionListener, MediaPlayerFragment.IMediaPlayerFragmentInteractionListener {
 
     private static final String TAG = Main2Activity.class.getName();
 
@@ -50,6 +55,7 @@ public class Main2Activity extends AbstractBaseActivity implements ISongCallBack
 
     private Song songToPlay;
     private Handler playerHandler;
+    ImageView lastSelectedEqualizer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,6 +97,7 @@ public class Main2Activity extends AbstractBaseActivity implements ISongCallBack
             @Override
             public void handleMessage(Message msg) {
                 Bundle bundle = msg.getData();
+
                 String action = bundle.getString(Constant.ACTION);
                 Log.d(TAG, "Action: " + action);
 
@@ -104,10 +111,10 @@ public class Main2Activity extends AbstractBaseActivity implements ISongCallBack
 //                    setSongProgress((int) timeElapsed);
 
                 } else if (action.equals(Constant.ACTION_SONG_CHANGE)) {
-//                    selectedSong((Song) bundle.getParcelable(Constant.PLAYING_SONG));
+//                    setSong((Song) bundle.getParcelable(Constant.PLAYING_SONG));
 //                    isSongDurationSet = false;
                 } else {
-//
+                    updatePlaybackButton(action);
                 }
             }
         };
@@ -122,8 +129,9 @@ public class Main2Activity extends AbstractBaseActivity implements ISongCallBack
         return R.layout.activity_main2;
     }
 
+
     @Override
-    public void selectedSong(Song song) {
+    public void selectedView(View v, Song song) {
         songToPlay = song;
         playerService.stop();
         playerService.setCurrentSong(songToPlay);
@@ -131,19 +139,84 @@ public class Main2Activity extends AbstractBaseActivity implements ISongCallBack
         playBackFragment.getArtwork().setImageBitmap(songToPlay.getArtWork());
         playBackFragment.getTitle().setText(songToPlay.getTitle());
         playBackFragment.getAuthor().setText(songToPlay.getAuthor());
-        playBackButtonClicked();
+
+        ImageView equalizer = (ImageView) v.findViewById(R.id.tab_title_equalizer_image);
+        if (this.lastSelectedEqualizer != null) {
+            ((AnimationDrawable)this.lastSelectedEqualizer.getBackground()).stop();
+            this.lastSelectedEqualizer.setVisibility(View.GONE);
+        }
+        equalizer.setVisibility(View.VISIBLE);
+        equalizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+        equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
+        ((AnimationDrawable) equalizer.getBackground()).start();
+        this.lastSelectedEqualizer = equalizer;
+        onPlayBackButtonClicked();
     }
 
     @Override
-    public void playBackButtonClicked() {
+    public void onPlayBackButtonClicked() {
         final int mediaPlayerState = playerService.getMediaPlayerState();
+        boolean toPlay;
         if (mediaPlayerState != AppMediaPlayer.STATE_STARTED) {
             playerService.play();
             playBackFragment.getPlayback().setImageBitmap(Util.getBitmap(this, R.mipmap.uamp_ic_pause_white_24dp));
+            toPlay = true;
         } else {
             playerService.pause();
             playBackFragment.getPlayback().setImageBitmap(Util.getBitmap(this, R.mipmap.uamp_ic_play_arrow_white_24dp));
+            toPlay = false;
         }
+        updateEqualizer(toPlay);
+    }
+
+    @Override
+    public void onViewClicked(View v) {
+        tabs.setVisibility(View.GONE);
+        pager.setVisibility(View.GONE);
+        playBackfragmentContainer.setVisibility(View.GONE);
+        findViewById(R.id.media_player_fragment).setVisibility(View.VISIBLE);
+        Fragment mediaPlayerFragment = MediaPlayerFragment.newInstance(null, null);
+        FragmentManager.replaceFragment(R.id.media_player_fragment, mediaPlayerFragment, getFragmentManager(), R.animator.slide_in_from_bottom, R.animator.slide_out_to_bottom);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        //TODO
+    }
+
+    public void updatePlaybackButton(String action) {
+        boolean toPlay;
+        if (action.equals(Constant.ACTION_SONG_PAUSE)) {
+            playBackFragment.getPlayback().setImageBitmap(Util.getBitmap(this, R.mipmap.uamp_ic_play_arrow_white_24dp));
+            toPlay = false;
+        } else {
+            playBackFragment.getPlayback().setImageBitmap(Util.getBitmap(this, R.mipmap.uamp_ic_pause_white_24dp));
+            toPlay = true;
+        }
+        updateEqualizer(toPlay);
+    }
+
+    public void updateEqualizer(boolean toPlay) {
+        if (toPlay) {
+            lastSelectedEqualizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+            lastSelectedEqualizer.getBackground().setTint(Color.parseColor("#3F51B5"));
+            ((AnimationDrawable) lastSelectedEqualizer.getBackground()).start();
+        } else {
+            lastSelectedEqualizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+            lastSelectedEqualizer.getBackground().setTint(Color.GRAY);
+            ((AnimationDrawable) lastSelectedEqualizer.getBackground()).stop();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        tabs.setVisibility(View.VISIBLE);
+        pager.setVisibility(View.VISIBLE);
+        playBackfragmentContainer.setVisibility(View.VISIBLE);
+        findViewById(R.id.media_player_fragment).setVisibility(View.GONE);
+//        Fragment mediaPlayerFragment = MediaPlayerFragment.newInstance(null, null);
+//        FragmentManager.replaceFragment(R.id.media_player_fragment, mediaPlayerFragment, getFragmentManager(),R.animator.slide_out_to_bottom, R.animator.slide_in_from_bottom);
+//        super.onBackPressed();
     }
 
     @Override

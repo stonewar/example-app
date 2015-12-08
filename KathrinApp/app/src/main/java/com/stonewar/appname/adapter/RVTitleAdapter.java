@@ -1,9 +1,5 @@
 package com.stonewar.appname.adapter;
 
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,7 +7,7 @@ import android.widget.TextView;
 import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractRVAdapter;
 import com.stonewar.appname.common.AbstractViewHolder;
-import com.stonewar.appname.common.ISongCallBack;
+import com.stonewar.appname.common.IRowViewPagerInteractionListener;
 import com.stonewar.appname.model.Song;
 
 import java.util.List;
@@ -21,9 +17,7 @@ import java.util.List;
  */
 public class RVTitleAdapter extends AbstractRVAdapter {
 
-    private ImageView lastSelectedRow;
-
-    public RVTitleAdapter(List<Song> songs, int resource, ISongCallBack songCallBack) {
+    public RVTitleAdapter(List<Song> songs, int resource, IRowViewPagerInteractionListener songCallBack) {
         super(songs, resource, songCallBack);
     }
 
@@ -40,6 +34,7 @@ public class RVTitleAdapter extends AbstractRVAdapter {
     public AbstractViewHolder viewHolder(View v) {
         return new TitleViewHolder(v);
     }
+
 
     private class TitleViewHolder extends AbstractViewHolder {
         public TextView title;
@@ -63,16 +58,17 @@ public class RVTitleAdapter extends AbstractRVAdapter {
 
         @Override
         public void onClick(View v) {
-            songCallBack.selectedSong(selectedSong);
-            if (lastSelectedRow != null) {
-                ((AnimationDrawable) lastSelectedRow.getBackground()).stop();
-                lastSelectedRow.setVisibility(View.GONE);
-            }
-            equalizer.setVisibility(View.VISIBLE);
-            equalizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
-            equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
-            ((AnimationDrawable) equalizer.getBackground()).start();
-            lastSelectedRow = equalizer;
+//            if (lastSelectedEqualizer != null) {
+//                ((AnimationDrawable) lastSelectedEqualizer.getBackground()).stop();
+//                lastSelectedEqualizer.setVisibility(View.GONE);
+//            }
+//            equalizer.setVisibility(View.VISIBLE);
+//            equalizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+//            equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
+//            ((AnimationDrawable) equalizer.getBackground()).start();
+//            lastSelectedEqualizer = equalizer;
+            songCallBack.selectedView(v, selectedSong);
+
         }
     }
 }

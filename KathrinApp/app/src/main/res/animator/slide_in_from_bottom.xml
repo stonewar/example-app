@@ -20,5 +20,6 @@
         android:propertyName="y"
         android:valueType="floatType"
         android:valueFrom="2000"
+        android:duration="6000"
         android:valueTo="0"/>
 </set>

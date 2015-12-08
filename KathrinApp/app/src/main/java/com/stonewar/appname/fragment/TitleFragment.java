@@ -7,9 +7,12 @@ import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.stonewar.appname.R;
 import com.stonewar.appname.adapter.RVTitleAdapter;
+import com.stonewar.appname.common.AbstractViewHolder;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
 import com.stonewar.appname.googlecode.DividerItemDecoration;
 import com.stonewar.appname.manager.SongManager;
