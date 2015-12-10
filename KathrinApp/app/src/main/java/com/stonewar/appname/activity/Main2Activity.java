@@ -42,7 +42,9 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
     private ViewPagerAdapter adapter;
     private SlidingTabLayout tabs;
     private PlayBackFragment playBackFragment;
-    private LinearLayout playBackfragmentContainer;
+    private LinearLayout playBackFragmentContainer;
+
+    private MediaPlayerFragment mediaPlayerFragment;
 
     //Service
     private IMediaPlayerService playerService;
@@ -55,7 +57,7 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
 
     private Song songToPlay;
     private Handler playerHandler;
-    ImageView lastSelectedEqualizer;
+    private ImageView lastSelectedEqualizer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +89,7 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
 
-        playBackfragmentContainer = (LinearLayout) findViewById(R.id.play_back_fragment_container);
+        playBackFragmentContainer = (LinearLayout) findViewById(R.id.play_back_fragment_container);
         playBackFragment = (PlayBackFragment) getFragmentManager().findFragmentById(R.id.play_back_Fragment);
 
 
@@ -102,19 +104,26 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
                 Log.d(TAG, "Action: " + action);
 
                 if (action.equals(Constant.ACTION_UPDATE_SEEK_BAR)) {
-//                    double timeElapsed = bundle.getDouble(Constant.TIME_ELAPSED);
-//                    double finalTime = bundle.getDouble(Constant.SONG_DURATION);
-//                    if (!isSongDurationSet) {
-//                        setSongDuration((int) finalTime);
-//                        isSongDurationSet = true;
-//                    }
-//                    setSongProgress((int) timeElapsed);
+                    double timeElapsed = bundle.getDouble(Constant.TIME_ELAPSED);
+                    double finalTime = bundle.getDouble(Constant.SONG_DURATION);
+                    if(mediaPlayerFragment != null) {
+                        if (!isSongDurationSet) {
+                            mediaPlayerFragment.setSongDuration((int) finalTime);
+                            isSongDurationSet = true;
+                        }
+                        mediaPlayerFragment.setSongProgress((int) timeElapsed);
+                    }
 
                 } else if (action.equals(Constant.ACTION_SONG_CHANGE)) {
-//                    setSong((Song) bundle.getParcelable(Constant.PLAYING_SONG));
-//                    isSongDurationSet = false;
+                    if(mediaPlayerFragment != null) {
+                        mediaPlayerFragment.setSong((Song) bundle.getParcelable(Constant.PLAYING_SONG));
+                        isSongDurationSet = false;
+                    }
                 } else {
                     updatePlaybackButton(action);
+                    if(mediaPlayerFragment != null) {
+                        mediaPlayerFragment.updatePlaybackButton(action);
+                    }
                 }
             }
         };
@@ -135,7 +144,7 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
         songToPlay = song;
         playerService.stop();
         playerService.setCurrentSong(songToPlay);
-        playBackfragmentContainer.setVisibility(View.VISIBLE);
+        playBackFragmentContainer.setVisibility(View.VISIBLE);
         playBackFragment.getArtwork().setImageBitmap(songToPlay.getArtWork());
         playBackFragment.getTitle().setText(songToPlay.getTitle());
         playBackFragment.getAuthor().setText(songToPlay.getAuthor());
@@ -173,10 +182,13 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
     public void onViewClicked(View v) {
         tabs.setVisibility(View.GONE);
         pager.setVisibility(View.GONE);
-        playBackfragmentContainer.setVisibility(View.GONE);
+        playBackFragmentContainer.setVisibility(View.GONE);
         findViewById(R.id.media_player_fragment).setVisibility(View.VISIBLE);
-        Fragment mediaPlayerFragment = MediaPlayerFragment.newInstance(null, null);
-        FragmentManager.replaceFragment(R.id.media_player_fragment, mediaPlayerFragment, getFragmentManager(), R.animator.slide_in_from_bottom, R.animator.slide_out_to_bottom);
+        toolbar.setVisibility(View.GONE);
+        if(mediaPlayerFragment == null) {
+            mediaPlayerFragment = MediaPlayerFragment.newInstance(null, null);
+            FragmentManager.replaceFragment(R.id.media_player_fragment, mediaPlayerFragment, getFragmentManager(), R.animator.slide_in_from_bottom, R.animator.slide_out_to_bottom);
+        }
     }
 
     @Override
@@ -212,10 +224,8 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
     public void onBackPressed() {
         tabs.setVisibility(View.VISIBLE);
         pager.setVisibility(View.VISIBLE);
-        playBackfragmentContainer.setVisibility(View.VISIBLE);
+        playBackFragmentContainer.setVisibility(View.VISIBLE);
         findViewById(R.id.media_player_fragment).setVisibility(View.GONE);
-//        Fragment mediaPlayerFragment = MediaPlayerFragment.newInstance(null, null);
-//        FragmentManager.replaceFragment(R.id.media_player_fragment, mediaPlayerFragment, getFragmentManager(),R.animator.slide_out_to_bottom, R.animator.slide_in_from_bottom);
 //        super.onBackPressed();
     }
 
