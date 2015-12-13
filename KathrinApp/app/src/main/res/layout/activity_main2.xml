@@ -35,17 +35,17 @@
 
         <fragment
             android:id="@+id/play_back_Fragment"
-            class="com.stonewar.appname.fragment.PlayBackFragment"
+            class="com.stonewar.appname.fragment.MediaPlayerFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_play_back"></fragment>
+            tools:layout="@layout/fragment_media_player"></fragment>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/media_player_fragment"
-        android:visibility="gone"
-        android:layout_below="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/media_player_fragment"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_below="@+id/tool_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
 
 </RelativeLayout>

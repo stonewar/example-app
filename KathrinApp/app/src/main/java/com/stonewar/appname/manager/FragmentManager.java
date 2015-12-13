@@ -19,7 +19,7 @@ public class FragmentManager {
 
         if(!isFragmentPoped) {
             FragmentTransaction fragTrans = fragmentManager.beginTransaction();
-//            fragTrans.setCustomAnimations(transactionIn, transactionOut);
+            fragTrans.setCustomAnimations(transactionIn, transactionOut);
             fragTrans.replace(containerViewId, fragment, fragmentName);
 //            fragTrans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragTrans.addToBackStack(fragmentName);

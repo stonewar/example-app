@@ -43,10 +43,10 @@ import java.util.concurrent.TimeUnit;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  */
-public class IMediaPlayerService extends Service implements IMediaPlayerController,
+public class MediaPlayerService extends Service implements IMediaPlayerController,
         OnCompletionListener, OnErrorListener, OnPreparedListener {
 
-    private static final String TAG = IMediaPlayerService.class.getName();
+    private static final String TAG = MediaPlayerService.class.getName();
 
     public static final int NOTIFY_ID = 101;
 
@@ -69,8 +69,8 @@ public class IMediaPlayerService extends Service implements IMediaPlayerControll
     private final IBinder mBinder = new PlayerServiceBinder();
 
     public class PlayerServiceBinder extends Binder {
-        public IMediaPlayerService getService() {
-            return IMediaPlayerService.this;
+        public MediaPlayerService getService() {
+            return MediaPlayerService.this;
         }
     }
 

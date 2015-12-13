@@ -29,5 +29,9 @@ public class Constant {
     public static final String ACTION_PLAY_PAUSE_SONG = "com.stonewar.appname.ACTION_PLAY_PAUSE_SONG";
     public static final String ACTION_STOP_SERVICE = "com.stonewar.appname.ACTION_STOP_SERVICE";
 
+
+    public static final java.lang.String INFORMATION = "Information";
+    public static final java.lang.String DESCRIPTION = "Description";
+
     private Constant(){};
 }

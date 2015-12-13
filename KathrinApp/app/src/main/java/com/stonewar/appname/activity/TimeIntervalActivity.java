@@ -12,9 +12,9 @@ import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractBaseActivity;
 import com.stonewar.appname.util.Constant;
 
-public class TimeIntervalActivityAbstract extends AbstractBaseActivity {
+public class TimeIntervalActivity extends AbstractBaseActivity {
 
-    private static final String TAG = TimeIntervalActivityAbstract.class.getName();
+    private static final String TAG = TimeIntervalActivity.class.getName();
     private String stoppingTimeInterval, playingTimeInterval;
     private NumberPicker npPlayInterval, npStopInterval;
     private Handler handler;

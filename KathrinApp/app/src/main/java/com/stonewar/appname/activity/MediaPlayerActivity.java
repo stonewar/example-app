@@ -19,7 +19,7 @@ import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractBaseActivity;
 import com.stonewar.appname.model.Song;
 import com.stonewar.appname.manager.SongManager;
-import com.stonewar.appname.service.IMediaPlayerService;
+import com.stonewar.appname.service.MediaPlayerService;
 import com.stonewar.appname.util.AppMediaPlayer;
 import com.stonewar.appname.util.Constant;
 import com.stonewar.appname.util.Util;
@@ -42,7 +42,7 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
     private ImageButton previousButton, playButton, nextButton;
 
     //Service
-    private IMediaPlayerService playerService;
+    private MediaPlayerService playerService;
 
     public boolean isServiceBound;
 
@@ -216,7 +216,7 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
         super.onStart();
         // Bind to Service
         if (!isServiceBound) {
-            Intent serviceIntent = new Intent(this, IMediaPlayerService.class);
+            Intent serviceIntent = new Intent(this, MediaPlayerService.class);
             bindService(serviceIntent, this, Context.BIND_AUTO_CREATE);
             startService(serviceIntent);
         }
@@ -233,7 +233,7 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        IMediaPlayerService.PlayerServiceBinder binder = (IMediaPlayerService.PlayerServiceBinder) service;
+        MediaPlayerService.PlayerServiceBinder binder = (MediaPlayerService.PlayerServiceBinder) service;
         playerService = binder.getService();
         playerService.setStoppingTimeInterval(stoppingTimeInterval);
         playerService.setPlayingTimeInterval(playingTimeInterval);

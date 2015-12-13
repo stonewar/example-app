@@ -25,20 +25,25 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <!-- <activity -->
-        <!-- android:name=".activity.TimeIntervalActivityAbstract" -->
+        <!-- android:name=".activity.TimeIntervalActivity" -->
         <!-- android:parentActivityName=".activity.MainActivity" /> -->
         <!-- <activity android:name=".activity.MediaPlayerActivity" /> -->
 
         <service
-            android:name=".service.IMediaPlayerService"
+            android:name=".service.MediaPlayerService"
             android:exported="false" />
 
         <activity
             android:name=".activity.Main2Activity"
             android:label="@string/title_activity_main2">
+        </activity>
+
+        <activity
+            android:name=".activity.PlayStopTimeIntervalActivity"
+            android:label="@string/title_activity_time_interval"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
