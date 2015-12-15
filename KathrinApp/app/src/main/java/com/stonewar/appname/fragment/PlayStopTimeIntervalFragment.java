@@ -40,7 +40,7 @@ public class PlayStopTimeIntervalFragment extends Fragment {
         Bundle arguments = new Bundle();
         arguments.putString(Constant.INFORMATION, information);
         arguments.putString(Constant.DESCRIPTION, description);
-        PlayStopTimeIntervalFragment fragment = new PlayStopTimeIntervalFragment();
+        final PlayStopTimeIntervalFragment fragment = new PlayStopTimeIntervalFragment();
         fragment.setArguments(arguments);
         return fragment;
     }

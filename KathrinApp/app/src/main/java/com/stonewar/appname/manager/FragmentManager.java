@@ -12,19 +12,21 @@ public class FragmentManager {
     private static final String TAG = FragmentManager.class.getName();
 
     public static void replaceFragment(int containerViewId, Fragment fragment, android.app.FragmentManager fragmentManager, int transactionIn, int transactionOut){
-        String fragmentName = fragment.getClass().getName();
-        Log.d(TAG, "The fragment's name: " + fragmentName);
-        boolean isFragmentPoped = fragmentManager.popBackStackImmediate(fragmentName, 0);
-        Log.d(TAG, "Is poped: "+isFragmentPoped);
+//        String fragmentName = fragment.getClass().getName();
+//        Log.d(TAG, "The fragment's name: " + fragmentName);
+//        boolean isFragmentPoped = fragmentManager.popBackStackImmediate(fragmentName, 0);
+//        Log.d(TAG, "Is poped: "+isFragmentPoped);
 
-        if(!isFragmentPoped) {
+//        if(!isFragmentPoped) {
             FragmentTransaction fragTrans = fragmentManager.beginTransaction();
             fragTrans.setCustomAnimations(transactionIn, transactionOut);
-            fragTrans.replace(containerViewId, fragment, fragmentName);
+//            fragTrans.replace(containerViewId, fragment, fragmentName);
+            fragTrans.replace(containerViewId, fragment);
 //            fragTrans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            fragTrans.addToBackStack(fragmentName);
+//            fragTrans.addToBackStack(fragmentName);
+            fragTrans.addToBackStack(null);
             fragTrans.commit();
-        }
+//        }
     }
 
     public static Fragment getCurrentFragment(android.app.FragmentManager fragmentManager){
