@@ -56,7 +56,7 @@ public class RVAlbumAdapter extends AbstractRVAdapter {
         @Override
         public void onClick(View v) {
 //            Log.d("TAAA", "" + selectedView.getTitle());
-            songCallBack.selectedView(v, selectedSong);
+            songCallBack.selectedView(v, selectedSong, songs);
         }
     }
 }

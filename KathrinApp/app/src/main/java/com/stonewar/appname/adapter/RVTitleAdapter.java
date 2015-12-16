@@ -67,7 +67,7 @@ public class RVTitleAdapter extends AbstractRVAdapter {
 //            equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
 //            ((AnimationDrawable) equalizer.getBackground()).start();
 //            lastSelectedEqualizer = equalizer;
-            songCallBack.selectedView(v, selectedSong);
+            songCallBack.selectedView(v, selectedSong, songs);
 
         }
     }

@@ -50,7 +50,7 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
     private int currentSongPosition;
     private int playingTimeInterval;
     private int stoppingTimeInterval;
-    private List<Song> selectedSongs;
+//    private List<Song> selectedSongs;
 
     private Song songToPlay;
     private Handler playerHandler;
@@ -137,10 +137,11 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
 
 
     @Override
-    public void selectedView(View v, Song song) {
+    public void selectedView(View v, Song song, List<Song> songs) {
         songToPlay = song;
         playerService.stop();
         playerService.setCurrentSong(songToPlay);
+        playerService.setSelectedSongs(songs);
         playBackFragmentContainer.setVisibility(View.VISIBLE);
         mediaPlayerFragment.setSong(song);
 
@@ -267,10 +268,9 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
     public void onServiceConnected(ComponentName name, IBinder service) {
         MediaPlayerService.PlayerServiceBinder binder = (MediaPlayerService.PlayerServiceBinder) service;
         playerService = binder.getService();
-        //TODO interval
         playerService.setStoppingTimeInterval(stoppingTimeInterval);
         playerService.setPlayingTimeInterval(playingTimeInterval);
-        playerService.setSelectedSongs(selectedSongs);
+//        playerService.setSelectedSongs(selectedSongs);
         playerService.setCurrentSong(songToPlay);
         playerService.setCurrentSongPosition(currentSongPosition);
         playerService.setHandler(playerHandler);

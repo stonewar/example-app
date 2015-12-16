@@ -42,8 +42,8 @@ public abstract class AbstractViewPagerFragment extends Fragment implements IRow
     }
 
     @Override
-    public void selectedView(View v, Song song){
-        iRowViewPagerCallBack.selectedView(v, song);
+    public void selectedView(View v, Song song, List<Song> songs){
+        iRowViewPagerCallBack.selectedView(v, song, songs);
     }
 
     @Override

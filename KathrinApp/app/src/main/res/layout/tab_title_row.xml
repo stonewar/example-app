@@ -6,10 +6,10 @@
 
     <ImageView
         android:id="@+id/tab_title_image_song"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
         android:scaleType="centerCrop"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="6dp"/>
 
@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="78dp"
+        android:paddingLeft="76dp"
         android:paddingRight="16dp"
         android:orientation="vertical"
         android:layout_alignParentBottom="false"

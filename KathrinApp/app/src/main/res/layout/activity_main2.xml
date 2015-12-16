@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.Main2Activity">
 
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/toolbar" />
-
-    <com.stonewar.appname.googlecode.SlidingTabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tool_bar"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_above="@+id/play_back_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tabs" />
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/tool_bar"
+                layout="@layout/toolbar" />
+
+            <com.stonewar.appname.googlecode.SlidingTabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tool_bar"
+                android:background="@color/colorPrimary"
+                android:elevation="4dp" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <LinearLayout
         android:id="@+id/play_back_fragment_container"
@@ -41,11 +57,5 @@
             tools:layout="@layout/fragment_media_player"></fragment>
     </LinearLayout>
 
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/media_player_fragment"-->
-        <!--android:visibility="gone"-->
-        <!--android:layout_below="@+id/tool_bar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
 
 </RelativeLayout>

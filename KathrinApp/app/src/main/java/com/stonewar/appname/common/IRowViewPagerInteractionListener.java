@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface IRowViewPagerInteractionListener {
 
-    void selectedView(View v, Song song);
+    void selectedView(View v, Song song, List<Song> songs);
 }
