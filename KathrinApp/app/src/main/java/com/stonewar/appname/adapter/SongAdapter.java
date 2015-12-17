@@ -8,7 +8,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.stonewar.appname.R;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Track;
 
 import java.util.List;
 
@@ -19,9 +19,9 @@ public class SongAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private List<Song> songs;
+    private List<Track> songs;
 
-    public SongAdapter(Context context, List<Song> songs){
+    public SongAdapter(Context context, List<Track> songs){
         this.context = context;
         this.inflater = android.view.LayoutInflater.from(this.context);
         this.songs =  songs;
@@ -61,7 +61,7 @@ public class SongAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox) v;
-                    Song songRow = (Song) cb.getTag();
+                    Track songRow = (Track) cb.getTag();
                     songRow.setIsSelected(cb.isChecked());
                 }
             });
@@ -71,7 +71,7 @@ public class SongAdapter extends BaseAdapter {
             holder = (ViewHolder)row.getTag();
         }
 
-        Song song = songs.get(position);
+        Track song = songs.get(position);
         holder.image.setImageBitmap(song.getArtWork());
         holder.title.setText(song.getTitle());
         holder.author.setText(song.getAuthor());

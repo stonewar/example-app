@@ -5,14 +5,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Track;
 
 /**
  * Created by yandypiedra on 05.12.15.
  */
 public abstract class AbstractViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-    protected Song selectedSong;
     protected ImageView image;
     protected TextView author;
 
@@ -27,14 +26,6 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder impleme
     public abstract int imageViewById();
 
     public abstract int authorViewById();
-
-    public Song getSelectedSong() {
-        return selectedSong;
-    }
-
-    public void setSelectedSong(Song selectedSong) {
-        this.selectedSong = selectedSong;
-    }
 
     public ImageView getImage() {
         return image;

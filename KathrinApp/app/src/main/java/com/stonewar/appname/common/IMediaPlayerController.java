@@ -1,9 +1,5 @@
 package com.stonewar.appname.common;
 
-import android.graphics.Bitmap;
-
-import com.stonewar.appname.model.Song;
-
 /**
  * Created by yandypiedra on 25.11.15.
  */
@@ -27,7 +23,7 @@ public interface IMediaPlayerController {
 //
 //    void updatePlaybackButton(String action);
 //
-//    void setSong(Song song);
+//    void setSong(Track song);
 
 //    void setSongDuration(int songDuration);
 //

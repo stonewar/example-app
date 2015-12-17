@@ -46,7 +46,7 @@ import com.stonewar.appname.R;
  * which color is used for any individual position.
  * <p>
  * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},
- * providing the layout ID of your custom layout.
+ * providing the layout TRACK_ID of your custom layout.
  */
 public class SlidingTabLayout extends HorizontalScrollView {
     /**

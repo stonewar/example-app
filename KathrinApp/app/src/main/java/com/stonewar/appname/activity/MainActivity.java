@@ -13,8 +13,8 @@ import android.widget.ListView;
 import com.stonewar.appname.R;
 import com.stonewar.appname.adapter.SongAdapter;
 import com.stonewar.appname.common.AbstractBaseActivity;
-import com.stonewar.appname.model.Song;
-import com.stonewar.appname.manager.SongManager;
+import com.stonewar.appname.model.Track;
+import com.stonewar.appname.manager.TrackManager;
 import com.stonewar.appname.util.Constant;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
 public class MainActivity extends AbstractBaseActivity {
 
     private ListView listSongs;
-    private List<Song> songs;
+    private List<Track> songs;
 
     private static final String TAG = MainActivity.class.getName();
 
@@ -52,7 +52,7 @@ public class MainActivity extends AbstractBaseActivity {
     }
 
     public void clear(View view) {
-        for(Song s: songs)
+        for(Track s: songs)
             s.setIsSelected(false);
         runOnUiThread(new Runnable() {
             @Override
@@ -63,8 +63,8 @@ public class MainActivity extends AbstractBaseActivity {
     }
 
     public void accept(View view) {
-       List<Song> selectedSongs = new ArrayList<>();
-        for(Song s: songs) {
+       List<Track> selectedSongs = new ArrayList<>();
+        for(Track s: songs) {
            if(s.isSelected()) {
                //not pretty but otherwise is the size to big!
                s.setArtWork(null);
@@ -78,17 +78,17 @@ public class MainActivity extends AbstractBaseActivity {
     }
 
 
-    private class SongsLoader extends AsyncTask<Void, Void, List<Song>>{
+    private class SongsLoader extends AsyncTask<Void, Void, List<Track>>{
 
         @Override
-        protected List<Song> doInBackground(Void... params) {
+        protected List<Track> doInBackground(Void... params) {
             ContentResolver contentResolver = getContentResolver();
             Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            return SongManager.findAllSongs(contentResolver, uri);
+            return TrackManager.findAllTracks(contentResolver, getBaseContext());
         }
 
         @Override
-        protected void onPostExecute(List<Song> foundSongs) {
+        protected void onPostExecute(List<Track> foundSongs) {
             songs = foundSongs;
             listSongs.setAdapter(new SongAdapter(getBaseContext(), songs));
         }

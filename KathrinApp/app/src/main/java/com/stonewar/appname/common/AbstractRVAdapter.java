@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Track;
 
 import java.util.List;
 
@@ -15,11 +15,9 @@ import java.util.List;
 public abstract class AbstractRVAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 
     protected IRowViewPagerInteractionListener songCallBack;
-    protected List<Song> songs;
     protected int resource;
 
-    public AbstractRVAdapter(List<Song> songs, int resource, IRowViewPagerInteractionListener songCallBack) {
-        this.songs = songs;
+    public AbstractRVAdapter(int resource, IRowViewPagerInteractionListener songCallBack) {
         this.resource  = resource;
         this.songCallBack = songCallBack;
     }
@@ -37,7 +35,5 @@ public abstract class AbstractRVAdapter extends RecyclerView.Adapter<AbstractVie
     public abstract AbstractViewHolder viewHolder(View v);
 
     @Override
-    public int getItemCount() {
-        return songs.size();
-    }
+    public abstract int getItemCount();
 }

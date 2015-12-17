@@ -26,8 +26,8 @@ import com.stonewar.appname.R;
 import com.stonewar.appname.activity.MainActivity;
 import com.stonewar.appname.broadcast.MediaPlayerBroadCastReceiver;
 import com.stonewar.appname.common.IMediaPlayerController;
-import com.stonewar.appname.manager.SongManager;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.manager.TrackManager;
+import com.stonewar.appname.model.Track;
 import com.stonewar.appname.util.AppMediaPlayer;
 import com.stonewar.appname.util.Constant;
 import com.stonewar.appname.util.Factory;
@@ -54,9 +54,9 @@ public class MediaPlayerService extends Service implements IMediaPlayerControlle
     private ScheduledExecutorService scheduleTaskExecutor;
     private int playingTimeInterval;
     private int stoppingTimeInterval;
-    private List<Song> selectedSongs;
+    private List<Track> selectedSongs;
     private int currentSongPosition;
-    private Song currentSong;
+    private Track currentSong;
     private Future<?> futureStartPause, futureCurrentPositionDuration;
 
     private double songDuration;
@@ -144,7 +144,7 @@ public class MediaPlayerService extends Service implements IMediaPlayerControlle
     public void next() {
         currentSongPosition = (currentSongPosition + 1) % selectedSongs.size();
         currentSong = selectedSongs.get(currentSongPosition);
-        Bitmap artwork = SongManager.findArtworkById(getContentResolver(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currentSong.getId());
+        Bitmap artwork = TrackManager.findArtworkById(getContentResolver(), MediaPlayerService.this, currentSong.getId());
         currentSong.setArtWork(artwork);
         handleSongChanged();
         mediaPlayer.stop();
@@ -159,7 +159,7 @@ public class MediaPlayerService extends Service implements IMediaPlayerControlle
             currentSongPosition = (currentSongPosition - 1) % selectedSongs.size();
         }
         currentSong = selectedSongs.get(currentSongPosition);
-        Bitmap artwork = SongManager.findArtworkById(getContentResolver(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currentSong.getId());
+        Bitmap artwork = TrackManager.findArtworkById(getContentResolver(), MediaPlayerService.this, currentSong.getId());
         currentSong.setArtWork(artwork);
         handleSongChanged();
         mediaPlayer.stop();
@@ -340,7 +340,7 @@ public class MediaPlayerService extends Service implements IMediaPlayerControlle
         this.stoppingTimeInterval = stoppingTimeInterval;
     }
 
-    public void setSelectedSongs(List<Song> selectedSongs) {
+    public void setSelectedSongs(List<Track> selectedSongs) {
         this.selectedSongs = selectedSongs;
     }
 
@@ -348,7 +348,7 @@ public class MediaPlayerService extends Service implements IMediaPlayerControlle
         this.currentSongPosition = position;
     }
 
-    public void setCurrentSong(Song currentSong) {
+    public void setCurrentSong(Track currentSong) {
         this.currentSong = currentSong;
     }
 

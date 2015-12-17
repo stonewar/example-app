@@ -3,24 +3,18 @@ package com.stonewar.appname.fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.stonewar.appname.R;
-import com.stonewar.appname.adapter.ViewPagerAdapter;
-import com.stonewar.appname.googlecode.SlidingTabLayout;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Track;
 import com.stonewar.appname.util.Constant;
 import com.stonewar.appname.util.Util;
 
@@ -54,7 +48,7 @@ public class MediaPlayerFragment extends Fragment {
     private TextView playingTime, songDuration;
     private ImageButton previousButton, playButton, nextButton;
 
-    private Song songToPlay;
+    private Track songToPlay;
 
     private ImageView artwork, playback;
     private TextView title, author;
@@ -185,7 +179,7 @@ public class MediaPlayerFragment extends Fragment {
         }
     }
 
-    public void setSong(Song song) {
+    public void setSong(Track song) {
         songToPlay = song;
         songArtwork.setImageBitmap(songToPlay.getArtWork());
         imageSong.setImageBitmap(songToPlay.getArtWork());

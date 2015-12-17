@@ -1,9 +1,8 @@
 package com.stonewar.appname.common;
 
 import android.view.View;
-import android.widget.ImageView;
 
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Track;
 
 import java.util.List;
 
@@ -12,5 +11,7 @@ import java.util.List;
  */
 public interface IRowViewPagerInteractionListener {
 
-    void selectedView(View v, Song song, List<Song> songs);
+    enum ViewPagerAction {Album, Artist, Title} //TODO change to tracks
+
+    void selectedView(View v, Track song, List<Track> songs, ViewPagerAction action);
 }

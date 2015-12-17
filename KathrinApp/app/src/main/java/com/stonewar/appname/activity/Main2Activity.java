@@ -23,7 +23,7 @@ import com.stonewar.appname.adapter.ViewPagerAdapter;
 import com.stonewar.appname.common.IRowViewPagerInteractionListener;
 import com.stonewar.appname.fragment.MediaPlayerFragment;
 import com.stonewar.appname.googlecode.SlidingTabLayout;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Track;
 import com.stonewar.appname.service.MediaPlayerService;
 import com.stonewar.appname.util.AppMediaPlayer;
 import com.stonewar.appname.util.Constant;
@@ -50,9 +50,9 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
     private int currentSongPosition;
     private int playingTimeInterval;
     private int stoppingTimeInterval;
-//    private List<Song> selectedSongs;
+//    private List<Track> selectedSongs;
 
-    private Song songToPlay;
+    private Track songToPlay;
     private Handler playerHandler;
     private ImageView lastSelectedEqualizer;
 
@@ -116,7 +116,7 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
 
                 } else if (action.equals(Constant.ACTION_SONG_CHANGE)) {
                     if (mediaPlayerFragment != null) {
-                        mediaPlayerFragment.setSong((Song) bundle.getParcelable(Constant.PLAYING_SONG));
+                        mediaPlayerFragment.setSong((Track) bundle.getParcelable(Constant.PLAYING_SONG));
 //                        isSongDurationSet = false;
                     }
                 } else {
@@ -137,25 +137,37 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
 
 
     @Override
-    public void selectedView(View v, Song song, List<Song> songs) {
-        songToPlay = song;
-        playerService.stop();
-        playerService.setCurrentSong(songToPlay);
-        playerService.setSelectedSongs(songs);
-        playBackFragmentContainer.setVisibility(View.VISIBLE);
-        mediaPlayerFragment.setSong(song);
+    public void selectedView(View v, Track song, List<Track> tracks, ViewPagerAction action) {
+        if(action == ViewPagerAction.Title) {
+            songToPlay = song;
+            playerService.stop();
+            playerService.setCurrentSong(songToPlay);
+            playerService.setSelectedSongs(tracks);
+            playBackFragmentContainer.setVisibility(View.VISIBLE);
+            mediaPlayerFragment.setSong(song);
 
-        ImageView equalizer = (ImageView) v.findViewById(R.id.tab_title_equalizer_image);
-        if (this.lastSelectedEqualizer != null) {
-            ((AnimationDrawable) this.lastSelectedEqualizer.getBackground()).stop();
-            this.lastSelectedEqualizer.setVisibility(View.GONE);
+            ImageView equalizer = (ImageView) v.findViewById(R.id.tab_title_equalizer_image);
+            if (this.lastSelectedEqualizer != null) {
+                ((AnimationDrawable) this.lastSelectedEqualizer.getBackground()).stop();
+                this.lastSelectedEqualizer.setVisibility(View.GONE);
+            }
+            equalizer.setVisibility(View.VISIBLE);
+            equalizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+            equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
+            ((AnimationDrawable) equalizer.getBackground()).start();
+            this.lastSelectedEqualizer = equalizer;
+            onPlayBackButtonClicked();
         }
-        equalizer.setVisibility(View.VISIBLE);
-        equalizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
-        equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
-        ((AnimationDrawable) equalizer.getBackground()).start();
-        this.lastSelectedEqualizer = equalizer;
-        onPlayBackButtonClicked();
+        else if(action == ViewPagerAction.Album){
+            Log.d(TAG, "Number of tracks from this album " + tracks.size());
+
+            for(Track t: tracks){
+                Log.d(TAG, "Track Title: "+t.getTitle());
+                Log.d(TAG, "Track AlbumTitle: "+t.getAlbumTitle());
+                Log.d(TAG, "Track Author: "+t.getAuthor());
+                Log.d(TAG, "Track Duration: "+t.getDuration());
+            }
+        }
     }
 
     @Override

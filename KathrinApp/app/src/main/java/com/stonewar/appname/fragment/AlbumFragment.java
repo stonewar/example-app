@@ -1,16 +1,15 @@
 package com.stonewar.appname.fragment;
 
 import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 
 import com.stonewar.appname.R;
 import com.stonewar.appname.adapter.RVAlbumAdapter;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
-import com.stonewar.appname.manager.SongManager;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.manager.AlbumManager;
+import com.stonewar.appname.model.Album;
 
 import java.util.List;
 
@@ -32,19 +31,19 @@ public class AlbumFragment extends AbstractViewPagerFragment {
         return "Album";
     }
 
-    private class AlbumLoader extends AsyncTask<Void, Void, List<Song>> {
+    private class AlbumLoader extends AsyncTask<Void, Void, List<Album>> {
 
         @Override
-        protected List<Song> doInBackground(Void... params) {
+        protected List<Album> doInBackground(Void... params) {
             ContentResolver contentResolver = getActivity().getContentResolver();
-            Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            return SongManager.findAllSongGroupedByArtists(contentResolver, uri);
+            final String selection = "1 = 1) GROUP BY (" + AlbumManager.ALBUM_NAME;
+            return AlbumManager.findAllAlbums(getContext(), contentResolver, selection);
         }
 
         @Override
-        protected void onPostExecute(List<Song> foundSongs) {
-            songs = foundSongs;
-            rvAdapter = new RVAlbumAdapter(songs, R.layout.tab_album_row, AlbumFragment.this);
+        protected void onPostExecute(List<Album> foundAlbums) {
+            Log.d(TAG, "Found albums :" + foundAlbums.size());
+            rvAdapter = new RVAlbumAdapter(foundAlbums, R.layout.tab_album_row, AlbumFragment.this);
             recyclerView.setAdapter(rvAdapter);
             recyclerView.setHasFixedSize(true);
             layoutManager = new GridLayoutManager(getActivity(), 2);

@@ -17,8 +17,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractBaseActivity;
-import com.stonewar.appname.model.Song;
-import com.stonewar.appname.manager.SongManager;
+import com.stonewar.appname.model.Track;
+import com.stonewar.appname.manager.TrackManager;
 import com.stonewar.appname.service.MediaPlayerService;
 import com.stonewar.appname.util.AppMediaPlayer;
 import com.stonewar.appname.util.Constant;
@@ -49,9 +49,9 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
     private int currentSongPosition;
     private int playingTimeInterval;
     private int stoppingTimeInterval;
-    private List<Song> selectedSongs;
+    private List<Track> selectedSongs;
 
-    private Song songToPlay;
+    private Track songToPlay;
     private Handler playerHandler;
 
     @Override
@@ -79,7 +79,7 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
         playButton = (ImageButton) findViewById(R.id.play);
         nextButton = (ImageButton) findViewById(R.id.next);
 
-        Bitmap artwork = SongManager.findArtworkById(getContentResolver(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songToPlay.getId());
+        Bitmap artwork = TrackManager.findArtworkById(getContentResolver(), getBaseContext(), songToPlay.getId());
         songToPlay.setArtWork(artwork);
 
         imageSong.setImageBitmap(artwork);
@@ -154,7 +154,7 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
                     setSongProgress((int) timeElapsed);
 
                 } else if (action.equals(Constant.ACTION_SONG_CHANGE)) {
-                    setSong((Song) bundle.getParcelable(Constant.PLAYING_SONG));
+                    setSong((Track) bundle.getParcelable(Constant.PLAYING_SONG));
                     isSongDurationSet = false;
                 } else {
                     updatePlaybackButton(action);
@@ -203,7 +203,7 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
         }
     }
 
-    public void setSong(Song song) {
+    public void setSong(Track song) {
         songToPlay = song;
         songArtwork.setImageBitmap(songToPlay.getArtWork());
         imageSong.setImageBitmap(songToPlay.getArtWork());

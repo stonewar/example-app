@@ -7,7 +7,8 @@ import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractRVAdapter;
 import com.stonewar.appname.common.AbstractViewHolder;
 import com.stonewar.appname.common.IRowViewPagerInteractionListener;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Album;
+import com.stonewar.appname.model.Track;
 
 import java.util.List;
 
@@ -16,17 +17,24 @@ import java.util.List;
  */
 public class RVAlbumAdapter extends AbstractRVAdapter {
 
-    public RVAlbumAdapter(List<Song> songs, int resource, IRowViewPagerInteractionListener songCallBack) {
-        super(songs, resource, songCallBack);
+    private List<Album> albums;
+
+    public RVAlbumAdapter(List<Album> albums, int resource, IRowViewPagerInteractionListener songCallBack) {
+        super(resource, songCallBack);
+        this.albums = albums;
     }
 
     @Override
     public void onBindViewHolder(AbstractViewHolder holder, int position) {
-        Song song = songs.get(position);
-        holder.setSelectedSong(song);
-        holder.getImage().setImageBitmap(song.getArtWork());
-        ((AlbumViewHolder)holder).title.setText(song.getTitle());
-        holder.getAuthor().setText(song.getAuthor());
+        Album album = albums.get(position);
+        AlbumViewHolder albumViewHolder = (AlbumViewHolder)holder;
+        albumViewHolder.selectedAlbum = album;
+        List<Track> trackList = album.getTrackList();
+        if(trackList != null && trackList.size() > 0){
+                holder.getImage().setImageBitmap(trackList.get(0).getArtWork());
+        }
+        albumViewHolder.title.setText(album.getTitle());
+        holder.getAuthor().setText(album.getArtist());
     }
 
     @Override
@@ -34,9 +42,15 @@ public class RVAlbumAdapter extends AbstractRVAdapter {
         return new AlbumViewHolder(view);
     }
 
+    @Override
+    public int getItemCount() {
+        return albums.size();
+    }
+
     private class AlbumViewHolder extends AbstractViewHolder {
 
         public TextView title;
+        public Album selectedAlbum;
 
         public AlbumViewHolder(View vRow) {
             super(vRow);
@@ -55,8 +69,7 @@ public class RVAlbumAdapter extends AbstractRVAdapter {
 
         @Override
         public void onClick(View v) {
-//            Log.d("TAAA", "" + selectedView.getTitle());
-            songCallBack.selectedView(v, selectedSong, songs);
+            songCallBack.selectedView(v, null, selectedAlbum.getTrackList(), IRowViewPagerInteractionListener.ViewPagerAction.Album);
         }
     }
 }

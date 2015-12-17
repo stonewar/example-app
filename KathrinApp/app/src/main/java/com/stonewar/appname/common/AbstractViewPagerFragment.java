@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.stonewar.appname.R;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Track;
 
 import java.util.List;
 
@@ -20,7 +20,6 @@ public abstract class AbstractViewPagerFragment extends Fragment implements IRow
 
     protected RecyclerView recyclerView;
     protected AbstractRVAdapter rvAdapter;
-    protected List<Song> songs;
     protected RecyclerView.LayoutManager layoutManager;
     protected IRowViewPagerInteractionListener iRowViewPagerCallBack;
 
@@ -42,8 +41,8 @@ public abstract class AbstractViewPagerFragment extends Fragment implements IRow
     }
 
     @Override
-    public void selectedView(View v, Song song, List<Song> songs){
-        iRowViewPagerCallBack.selectedView(v, song, songs);
+    public void selectedView(View v, Track song, List<Track> songs, ViewPagerAction action){
+        iRowViewPagerCallBack.selectedView(v, song, songs, action);
     }
 
     @Override

@@ -5,16 +5,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
 
 import com.stonewar.appname.R;
 import com.stonewar.appname.adapter.RVArtistAdapter;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
-import com.stonewar.appname.manager.SongManager;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.manager.TrackManager;
+import com.stonewar.appname.model.Track;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by yandypiedra on 04.12.15.
@@ -22,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 public class ArtistFragment extends AbstractViewPagerFragment {
 
     private static final String TAG = ArtistFragment.class.getName();
+    private List<Track> songs;
 
     @Override
     public void executeThread() {
@@ -34,17 +33,16 @@ public class ArtistFragment extends AbstractViewPagerFragment {
         return "Artist";
     }
 
-    private class ArtistLoader extends AsyncTask<Void, Void, List<Song>> {
+    private class ArtistLoader extends AsyncTask<Void, Void, List<Track>> {
 
         @Override
-        protected List<Song> doInBackground(Void... params) {
+        protected List<Track> doInBackground(Void... params) {
             ContentResolver contentResolver = getActivity().getContentResolver();
-            Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            return SongManager.findAllSongGroupedByArtists(contentResolver, uri);
+            return TrackManager.findAllTracksGroupedBy(contentResolver, getContext(), MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ARTIST);
         }
 
         @Override
-        protected void onPostExecute(List<Song> foundSongs) {
+        protected void onPostExecute(List<Track> foundSongs) {
             songs = foundSongs;
             rvAdapter = new RVArtistAdapter(songs, R.layout.tab_artist_row, ArtistFragment.this);
             recyclerView.setAdapter(rvAdapter);

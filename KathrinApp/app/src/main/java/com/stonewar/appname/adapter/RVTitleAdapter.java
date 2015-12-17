@@ -8,7 +8,7 @@ import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractRVAdapter;
 import com.stonewar.appname.common.AbstractViewHolder;
 import com.stonewar.appname.common.IRowViewPagerInteractionListener;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.model.Track;
 
 import java.util.List;
 
@@ -17,17 +17,21 @@ import java.util.List;
  */
 public class RVTitleAdapter extends AbstractRVAdapter {
 
-    public RVTitleAdapter(List<Song> songs, int resource, IRowViewPagerInteractionListener songCallBack) {
-        super(songs, resource, songCallBack);
+    private List<Track> tracks;
+
+    public RVTitleAdapter(List<Track> tracks, int resource, IRowViewPagerInteractionListener songCallBack) {
+        super(resource, songCallBack);
+        this.tracks = tracks;
     }
 
     @Override
     public void onBindViewHolder(AbstractViewHolder holder, int position) {
-        Song song = songs.get(position);
-        holder.setSelectedSong(song);
-        holder.getImage().setImageBitmap(song.getArtWork());
-        ((TitleViewHolder) holder).title.setText(song.getTitle());
-        holder.getAuthor().setText(song.getAuthor());
+        Track track = tracks.get(position);
+        TitleViewHolder titleViewHolder = (TitleViewHolder)holder;
+        titleViewHolder.selectTrack = track;
+        titleViewHolder.getImage().setImageBitmap(track.getArtWork());
+        titleViewHolder.title.setText(track.getTitle());
+        titleViewHolder.getAuthor().setText(track.getAuthor());
     }
 
     @Override
@@ -35,10 +39,16 @@ public class RVTitleAdapter extends AbstractRVAdapter {
         return new TitleViewHolder(v);
     }
 
+    @Override
+    public int getItemCount() {
+        return tracks.size();
+    }
+
 
     private class TitleViewHolder extends AbstractViewHolder {
         public TextView title;
         public ImageView equalizer;
+        public Track selectTrack;
 
         public TitleViewHolder(View vRow) {
             super(vRow);
@@ -67,7 +77,7 @@ public class RVTitleAdapter extends AbstractRVAdapter {
 //            equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
 //            ((AnimationDrawable) equalizer.getBackground()).start();
 //            lastSelectedEqualizer = equalizer;
-            songCallBack.selectedView(v, selectedSong, songs);
+            songCallBack.selectedView(v, selectTrack, tracks, IRowViewPagerInteractionListener.ViewPagerAction.Title);
 
         }
     }

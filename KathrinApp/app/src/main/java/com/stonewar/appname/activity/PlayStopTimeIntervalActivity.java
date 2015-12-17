@@ -67,7 +67,7 @@ public class PlayStopTimeIntervalActivity extends AbstractBaseActivity
     public void onTimerValueChanged(int i) {
         if(!isPlayingTimeSet){
             playTimeInterval = i;
-            isPlayingTimeSet = true;
+            isPlayingTimeSet = true; //TODO see this bug
             Log.d(TAG, "playing time interval set: "+playTimeInterval);
         }
         else {

@@ -6,20 +6,15 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.stonewar.appname.R;
 import com.stonewar.appname.adapter.RVTitleAdapter;
-import com.stonewar.appname.common.AbstractViewHolder;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
 import com.stonewar.appname.googlecode.DividerItemDecoration;
-import com.stonewar.appname.manager.SongManager;
-import com.stonewar.appname.model.Song;
+import com.stonewar.appname.manager.TrackManager;
+import com.stonewar.appname.model.Track;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by yandypiedra on 04.12.15.
@@ -39,19 +34,17 @@ public class TitleFragment extends AbstractViewPagerFragment {
         return "Title";
     }
 
-    private class SongsLoader extends AsyncTask<Void, Void, List<Song>> {
+    private class SongsLoader extends AsyncTask<Void, Void, List<Track>> {
 
         @Override
-        protected List<Song> doInBackground(Void... params) {
+        protected List<Track> doInBackground(Void... params) {
             ContentResolver contentResolver = getActivity().getContentResolver();
-            Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            return SongManager.findAllSongs(contentResolver, uri);
+            return TrackManager.findAllTracks(contentResolver, getContext());
         }
 
         @Override
-        protected void onPostExecute(List<Song> foundSongs) {
-            songs = foundSongs;
-            rvAdapter = new RVTitleAdapter(songs, R.layout.tab_title_row, TitleFragment.this);
+        protected void onPostExecute(List<Track> foundSongs) {
+            rvAdapter = new RVTitleAdapter(foundSongs, R.layout.tab_title_row, TitleFragment.this);
             recyclerView.setAdapter(rvAdapter);
             recyclerView.setHasFixedSize(true);
             RecyclerView.ItemDecoration itemDecoration = new
