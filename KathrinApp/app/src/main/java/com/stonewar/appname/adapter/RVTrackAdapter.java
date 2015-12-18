@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * Created by yandypiedra on 05.12.15.
  */
-public class RVTitleAdapter extends AbstractRVAdapter {
+public class RVTrackAdapter extends AbstractRVAdapter {
 
     private List<Track> tracks;
 
-    public RVTitleAdapter(List<Track> tracks, int resource, IRowViewPagerInteractionListener songCallBack) {
+    public RVTrackAdapter(List<Track> tracks, int resource, IRowViewPagerInteractionListener songCallBack) {
         super(resource, songCallBack);
         this.tracks = tracks;
     }
@@ -52,7 +52,7 @@ public class RVTitleAdapter extends AbstractRVAdapter {
 
         public TitleViewHolder(View vRow) {
             super(vRow);
-            title = (TextView) vRow.findViewById(R.id.tab_title_text_title_song);
+            title = (TextView) vRow.findViewById(R.id.title_track);
             equalizer = (ImageView) vRow.findViewById(R.id.tab_title_equalizer_image);
         }
 
@@ -63,7 +63,7 @@ public class RVTitleAdapter extends AbstractRVAdapter {
 
         @Override
         public int authorViewById() {
-            return R.id.tab_title_text_author_song;
+            return R.id.album_or_author_track;
         }
 
         @Override
@@ -77,7 +77,7 @@ public class RVTitleAdapter extends AbstractRVAdapter {
 //            equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
 //            ((AnimationDrawable) equalizer.getBackground()).start();
 //            lastSelectedEqualizer = equalizer;
-            songCallBack.selectedView(v, selectTrack, tracks, IRowViewPagerInteractionListener.ViewPagerAction.Title);
+            songCallBack.selectedTrack(v, selectTrack, tracks);
 
         }
     }

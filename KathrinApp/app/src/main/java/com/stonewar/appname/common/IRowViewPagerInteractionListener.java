@@ -2,6 +2,7 @@ package com.stonewar.appname.common;
 
 import android.view.View;
 
+import com.stonewar.appname.model.Album;
 import com.stonewar.appname.model.Track;
 
 import java.util.List;
@@ -11,7 +12,10 @@ import java.util.List;
  */
 public interface IRowViewPagerInteractionListener {
 
-    enum ViewPagerAction {Album, Artist, Title} //TODO change to tracks
+    void selectedTrack(View v, Track song, List<Track> songs);
 
-    void selectedView(View v, Track song, List<Track> songs, ViewPagerAction action);
+    void selectedAlbum(View v, Album album);
+
+    //TODO analise this method
+    void selectedArtist(View v, List<Track> songs);
 }

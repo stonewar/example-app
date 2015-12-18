@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -67,8 +66,8 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
 
         //play_toolbar
         imageSong = (ImageView) findViewById(R.id.tab_title_image_song);
-        songTitle = (TextView) findViewById(R.id.tab_title_text_title_song);
-        songAuthor = (TextView) findViewById(R.id.tab_title_text_author_song);
+        songTitle = (TextView) findViewById(R.id.title_track);
+        songAuthor = (TextView) findViewById(R.id.album_or_author_track);
 
         //activity_play
         songArtwork = (ImageView) findViewById(R.id.songArtwork);

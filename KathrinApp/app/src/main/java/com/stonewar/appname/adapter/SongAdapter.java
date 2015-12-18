@@ -53,8 +53,8 @@ public class SongAdapter extends BaseAdapter {
             //create the view
             row = inflater.inflate(R.layout.list_song_row, parent, false);
             holder.image = (ImageView) row.findViewById(R.id.tab_title_image_song);
-                holder.title = (TextView) row.findViewById(R.id.tab_title_text_title_song);
-                holder.author = (TextView)row.findViewById(R.id.tab_title_text_author_song);
+                holder.title = (TextView) row.findViewById(R.id.title_track);
+                holder.author = (TextView)row.findViewById(R.id.album_or_author_track);
                 holder.isSelected = (CheckBox)row.findViewById(R.id.check_box_selected_song);
             row.setTag(holder);
             holder.isSelected.setOnClickListener(new View.OnClickListener() {

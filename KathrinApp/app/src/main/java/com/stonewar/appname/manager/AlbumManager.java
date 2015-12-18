@@ -1,15 +1,12 @@
 package com.stonewar.appname.manager;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-
 import com.stonewar.appname.model.Album;
 import com.stonewar.appname.model.Track;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +22,7 @@ public class AlbumManager {
     public static final String ARTIST = MediaStore.Audio.Albums.ARTIST;
     public static final Uri URI = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
     public static final String[] COLUMNS_TO_RETRIEVE = {ID, ALBUM_NAME, ARTIST};
+
 
     public static List<Album> findAllAlbums(Context context, ContentResolver contentResolver, String selection) {
         Cursor cursor = contentResolver.query(URI, COLUMNS_TO_RETRIEVE, selection, null, ARTIST);
@@ -57,7 +55,7 @@ public class AlbumManager {
         Log.d(TAG, "Id: " + id);
         Log.d(TAG, "Title: " + title);
         Log.d(TAG, "Author: " + artist);
-        List<Track> tracks = TrackManager.findTracksByAlbumAndArtist(contentResolver, context, title, artist, TrackManager.ARTIST);
+        List<Track> tracks = TrackManager.findTracksByAlbum(contentResolver, context, title, artist, TrackManager.ARTIST);
         Album album = new Album(tracks, id, title, artist);
         return  album;
     }

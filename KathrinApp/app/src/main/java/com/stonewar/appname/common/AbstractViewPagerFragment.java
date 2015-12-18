@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.stonewar.appname.R;
+import com.stonewar.appname.model.Album;
 import com.stonewar.appname.model.Track;
 
 import java.util.List;
@@ -41,9 +42,20 @@ public abstract class AbstractViewPagerFragment extends Fragment implements IRow
     }
 
     @Override
-    public void selectedView(View v, Track song, List<Track> songs, ViewPagerAction action){
-        iRowViewPagerCallBack.selectedView(v, song, songs, action);
+    public void selectedTrack(View v, Track song, List<Track> songs) {
+        iRowViewPagerCallBack.selectedTrack(v, song, songs);
     }
+
+    @Override
+    public void selectedAlbum(View v, Album album) {
+        iRowViewPagerCallBack.selectedAlbum(v, album);
+    }
+
+    @Override
+    public void selectedArtist(View v, List<Track> artistSongs) {
+        iRowViewPagerCallBack.selectedArtist(v, artistSongs);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

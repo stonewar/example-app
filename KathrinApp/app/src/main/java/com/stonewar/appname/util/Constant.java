@@ -33,5 +33,8 @@ public class Constant {
     public static final java.lang.String INFORMATION = "Information";
     public static final java.lang.String DESCRIPTION = "Description";
 
+    public static final String ALBUM = "Album";
+    public static final String BITMAP = "Bitmap";
+
     private Constant(){};
 }

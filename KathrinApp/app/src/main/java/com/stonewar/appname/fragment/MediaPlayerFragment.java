@@ -86,8 +86,8 @@ public class MediaPlayerFragment extends Fragment {
 
         //play_toolbar
         imageSong = (ImageView) view.findViewById(R.id.tab_title_image_song);
-        songTitle = (TextView) view.findViewById(R.id.tab_title_text_title_song);
-        songAuthor = (TextView) view.findViewById(R.id.tab_title_text_author_song);
+        songTitle = (TextView) view.findViewById(R.id.title_track);
+        songAuthor = (TextView) view.findViewById(R.id.album_or_author_track);
 
         //activity_play
         songArtwork = (ImageView) view.findViewById(R.id.songArtwork);

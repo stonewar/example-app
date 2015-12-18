@@ -55,7 +55,7 @@ public class TrackManager {
         return findTracks(contentResolver, context, selection, selectionArg, orderBy);
     }
 
-    public static List<Track> findTracksByAlbumAndArtist(ContentResolver contentResolver, Context context, String album, String artist , String orderBy) {
+    public static List<Track> findTracksByAlbum(ContentResolver contentResolver, Context context, String album, String artist, String orderBy) {
         final String selection = MediaStore.Audio.Media.IS_MUSIC + " = ? AND "+ALBUM+"=?";
         final String[] selectionArg = {"1", album};
         return findTracks(contentResolver, context, selection, selectionArg, orderBy);

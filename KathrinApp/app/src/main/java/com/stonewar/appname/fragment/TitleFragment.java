@@ -1,14 +1,12 @@
 package com.stonewar.appname.fragment;
 
 import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.stonewar.appname.R;
-import com.stonewar.appname.adapter.RVTitleAdapter;
+import com.stonewar.appname.adapter.RVTrackAdapter;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
 import com.stonewar.appname.googlecode.DividerItemDecoration;
 import com.stonewar.appname.manager.TrackManager;
@@ -44,7 +42,7 @@ public class TitleFragment extends AbstractViewPagerFragment {
 
         @Override
         protected void onPostExecute(List<Track> foundSongs) {
-            rvAdapter = new RVTitleAdapter(foundSongs, R.layout.tab_title_row, TitleFragment.this);
+            rvAdapter = new RVTrackAdapter(foundSongs, R.layout.tab_title_row, TitleFragment.this);
             recyclerView.setAdapter(rvAdapter);
             recyclerView.setHasFixedSize(true);
             RecyclerView.ItemDecoration itemDecoration = new

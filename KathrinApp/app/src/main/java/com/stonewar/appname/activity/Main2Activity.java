@@ -1,10 +1,12 @@
 package com.stonewar.appname.activity;
 
+import android.app.ActivityOptions;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,6 +25,7 @@ import com.stonewar.appname.adapter.ViewPagerAdapter;
 import com.stonewar.appname.common.IRowViewPagerInteractionListener;
 import com.stonewar.appname.fragment.MediaPlayerFragment;
 import com.stonewar.appname.googlecode.SlidingTabLayout;
+import com.stonewar.appname.model.Album;
 import com.stonewar.appname.model.Track;
 import com.stonewar.appname.service.MediaPlayerService;
 import com.stonewar.appname.util.AppMediaPlayer;
@@ -125,7 +128,6 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
             }
         };
 
-
         //TODO get the selected songs
         //this.selectedSongs = ...
     }
@@ -137,43 +139,58 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
 
 
     @Override
-    public void selectedView(View v, Track song, List<Track> tracks, ViewPagerAction action) {
-        if(action == ViewPagerAction.Title) {
-            songToPlay = song;
-            playerService.stop();
-            playerService.setCurrentSong(songToPlay);
-            playerService.setSelectedSongs(tracks);
-            playBackFragmentContainer.setVisibility(View.VISIBLE);
-            mediaPlayerFragment.setSong(song);
+    public void selectedTrack(View v, Track song, List<Track> tracks) {
+        songToPlay = song;
+        playerService.stop();
+        playerService.setCurrentSong(songToPlay);
+        playerService.setSelectedSongs(tracks);
+        playBackFragmentContainer.setVisibility(View.VISIBLE);
+        mediaPlayerFragment.setSong(song);
 
-            ImageView equalizer = (ImageView) v.findViewById(R.id.tab_title_equalizer_image);
-            if (this.lastSelectedEqualizer != null) {
-                ((AnimationDrawable) this.lastSelectedEqualizer.getBackground()).stop();
-                this.lastSelectedEqualizer.setVisibility(View.GONE);
-            }
-            equalizer.setVisibility(View.VISIBLE);
-            equalizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
-            equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
-            ((AnimationDrawable) equalizer.getBackground()).start();
-            this.lastSelectedEqualizer = equalizer;
-            onPlayBackButtonClicked();
+        ImageView equalizer = (ImageView) v.findViewById(R.id.tab_title_equalizer_image);
+        if (this.lastSelectedEqualizer != null) {
+            ((AnimationDrawable) this.lastSelectedEqualizer.getBackground()).stop();
+            this.lastSelectedEqualizer.setVisibility(View.GONE);
         }
-        else if(action == ViewPagerAction.Album){
-            Log.d(TAG, "Number of tracks from this album " + tracks.size());
-
-            for(Track t: tracks){
-                Log.d(TAG, "Track Title: "+t.getTitle());
-                Log.d(TAG, "Track AlbumTitle: "+t.getAlbumTitle());
-                Log.d(TAG, "Track Author: "+t.getAuthor());
-                Log.d(TAG, "Track Duration: "+t.getDuration());
-            }
-        }
+        equalizer.setVisibility(View.VISIBLE);
+        equalizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+        equalizer.getBackground().setTint(Color.parseColor("#3F51B5"));
+        ((AnimationDrawable) equalizer.getBackground()).start();
+        this.lastSelectedEqualizer = equalizer;
+        onPlayBackButtonClicked();
     }
+
+    @Override
+    public void selectedAlbum(View v, Album album) {
+        for(Track t: album.getTrackList()){
+            Log.d(TAG, "Track Title: "+t.getTitle());
+            Log.d(TAG, "Track AlbumTitle: "+t.getAlbumTitle());
+            Log.d(TAG, "Track Author: "+t.getAuthor());
+            Log.d(TAG, "Track Duration: "+t.getDuration());
+        }
+
+        ImageView albumImage = (ImageView) v.findViewById(R.id.tab_album_image_song);
+        List<Track> tracks = album.getTrackList();
+        for(Track t : tracks)
+            t.setArtWork(null);
+
+        Intent intent = new Intent(this, AlbumArtistActivity.class);
+        intent.putExtra(Constant.ALBUM, album);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, albumImage, "photo");
+        startActivity(intent, options.toBundle());
+    }
+
+    @Override
+    public void selectedArtist(View v, List<Track> songs) {
+        //TODO
+    }
+
 
     @Override
     public void onPlayBackButtonClicked() {
         play();
     }
+
 
     @Override
     public void onPLayLayoutClicked(View v) {
@@ -260,11 +277,9 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
     protected void onStart() {
         super.onStart();
         // Bind to Service
-        if (!isServiceBound) {
             Intent serviceIntent = new Intent(this, MediaPlayerService.class);
             bindService(serviceIntent, this, Context.BIND_AUTO_CREATE);
             startService(serviceIntent);
-        }
     }
 
     @Override

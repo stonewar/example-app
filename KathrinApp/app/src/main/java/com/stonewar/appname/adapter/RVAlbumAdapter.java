@@ -69,7 +69,7 @@ public class RVAlbumAdapter extends AbstractRVAdapter {
 
         @Override
         public void onClick(View v) {
-            songCallBack.selectedView(v, null, selectedAlbum.getTrackList(), IRowViewPagerInteractionListener.ViewPagerAction.Album);
+            songCallBack.selectedAlbum(v, selectedAlbum);
         }
     }
 }
