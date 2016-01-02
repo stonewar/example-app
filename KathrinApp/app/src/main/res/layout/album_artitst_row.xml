@@ -4,13 +4,23 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground">
 
+    <TextView
+        android:id="@+id/track_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="1"
+        android:paddingLeft="16dp"
+        android:textSize="16sp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:paddingRight="16dp"
+        android:layout_toRightOf="@+id/track_number"
         android:orientation="vertical"
         android:layout_alignParentBottom="false"
         android:layout_centerVertical="true">
@@ -31,6 +41,16 @@
             android:textSize="12dp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/duration_track"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="sdfa"
+        android:paddingRight="15dp"
+        android:textSize="16sp" />
 
     <ImageButton
         android:id="@+id/tab_title_equalizer_image"

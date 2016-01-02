@@ -10,6 +10,7 @@ import com.stonewar.appname.R;
 import com.stonewar.appname.model.Track;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by yandypiedra on 18.12.15.
@@ -40,6 +41,11 @@ public class AlbumArtistAdapter extends RecyclerView.Adapter<AlbumArtistAdapter.
         Track track = tracks.get(position);
         holder.title.setText(track.getTitle());
         holder.albumOrAuthor.setText(track.getAuthor()); //TODO when should be set the author an when the album
+        holder.duration.setText(String.format("%d:%d",
+                TimeUnit.MILLISECONDS.toMinutes(track.getDuration()),
+                TimeUnit.MILLISECONDS.toSeconds(track.getDuration())
+                        - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(track.getDuration()))));
+        holder.number.setText(""+( position + 1));
     }
 
     @Override
@@ -47,15 +53,18 @@ public class AlbumArtistAdapter extends RecyclerView.Adapter<AlbumArtistAdapter.
         return tracks.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView albumOrAuthor;
+        public TextView duration;
+        public TextView number;
 
         public ViewHolder(View v) {
             super(v);
             title = (TextView) v.findViewById(R.id.title_track);
             albumOrAuthor = (TextView) v.findViewById(R.id.album_or_author_track);
+            duration = (TextView) v.findViewById(R.id.duration_track);
+            number = (TextView) v.findViewById(R.id.track_number);
         }
     }
 }

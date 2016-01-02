@@ -20,6 +20,7 @@ import android.graphics.drawable.AnimationDrawable;
 
 import com.stonewar.appname.R;
 import com.stonewar.appname.common.AbstractBaseActivity;
+import com.stonewar.appname.common.AbstractMediaPlayerActivity;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
 import com.stonewar.appname.adapter.ViewPagerAdapter;
 import com.stonewar.appname.common.IRowViewPagerInteractionListener;
@@ -34,8 +35,7 @@ import com.stonewar.appname.util.Factory;
 import com.stonewar.appname.util.Util;
 import java.util.List;
 
-public class Main2Activity extends AbstractBaseActivity implements IRowViewPagerInteractionListener,
-        ServiceConnection, MediaPlayerFragment.IMediaPlayerFragmentInteractionListener {
+public class Main2Activity extends AbstractMediaPlayerActivity implements IRowViewPagerInteractionListener {
 
     private static final String TAG = Main2Activity.class.getName();
 
@@ -43,20 +43,6 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
     private ViewPagerAdapter adapter;
     private SlidingTabLayout tabs;
     private LinearLayout playBackFragmentContainer;
-
-    private MediaPlayerFragment mediaPlayerFragment;
-
-    //Service
-    private MediaPlayerService playerService;
-    public boolean isServiceBound;
-
-    private int currentSongPosition;
-    private int playingTimeInterval;
-    private int stoppingTimeInterval;
-//    private List<Track> selectedSongs;
-
-    private Track songToPlay;
-    private Handler playerHandler;
     private ImageView lastSelectedEqualizer;
 
     @Override
@@ -91,45 +77,7 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-
         playBackFragmentContainer = (LinearLayout) findViewById(R.id.play_back_fragment_container);
-//        playBackFragment = (PlayBackFragment) getFragmentManager().findFragmentById(R.id.play_back_Fragment);
-        mediaPlayerFragment = (MediaPlayerFragment) getFragmentManager().findFragmentById(R.id.play_back_Fragment);
-
-        playerHandler = new Handler() {
-            private boolean isSongDurationSet;
-
-            @Override
-            public void handleMessage(Message msg) {
-                Bundle bundle = msg.getData();
-
-                String action = bundle.getString(Constant.ACTION);
-                Log.d(TAG, "Action: " + action);
-
-                if (action.equals(Constant.ACTION_UPDATE_SEEK_BAR)) {
-                    double timeElapsed = bundle.getDouble(Constant.TIME_ELAPSED);
-                    double finalTime = bundle.getDouble(Constant.SONG_DURATION);
-                    if (mediaPlayerFragment != null) {
-//                        if (!isSongDurationSet) {
-                        mediaPlayerFragment.setSongDuration((int) finalTime);
-//                            isSongDurationSet = true;
-//                        }
-                        mediaPlayerFragment.setSongProgress((int) timeElapsed);
-                    }
-
-                } else if (action.equals(Constant.ACTION_SONG_CHANGE)) {
-                    if (mediaPlayerFragment != null) {
-                        mediaPlayerFragment.setSong((Track) bundle.getParcelable(Constant.PLAYING_SONG));
-//                        isSongDurationSet = false;
-                    }
-                } else {
-                    updatePlaybackButton(action);
-                }
-            }
-        };
-
-        //TODO get the selected songs
-        //this.selectedSongs = ...
     }
 
     @Override
@@ -137,6 +85,27 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
         return R.layout.activity_main2;
     }
 
+    @Override
+    public void onPLayLayoutClicked(View v) {
+        tabs.setVisibility(View.GONE);
+        pager.setVisibility(View.GONE);
+        mediaPlayerFragment.setSong(songToPlay);
+        mediaPlayerFragment.showMediaPlayerLayout();
+
+    }
+
+    @Override
+    public void updateEqualizer(boolean toPlay) {
+        if (toPlay) {
+            lastSelectedEqualizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+            lastSelectedEqualizer.getBackground().setTint(Color.parseColor("#3F51B5"));
+            ((AnimationDrawable) lastSelectedEqualizer.getBackground()).start();
+        } else {
+            lastSelectedEqualizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
+            lastSelectedEqualizer.getBackground().setTint(Color.GRAY);
+            ((AnimationDrawable) lastSelectedEqualizer.getBackground()).stop();
+        }
+    }
 
     @Override
     public void selectedTrack(View v, Track song, List<Track> tracks) {
@@ -176,6 +145,8 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
 
         Intent intent = new Intent(this, AlbumArtistActivity.class);
         intent.putExtra(Constant.ALBUM, album);
+        songToPlay.setArtWork(null);
+        intent.putExtra(Constant.PLAYING_SONG, songToPlay);
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, albumImage, "photo");
         startActivity(intent, options.toBundle());
     }
@@ -185,128 +156,11 @@ public class Main2Activity extends AbstractBaseActivity implements IRowViewPager
         //TODO
     }
 
-
-    @Override
-    public void onPlayBackButtonClicked() {
-        play();
-    }
-
-
-    @Override
-    public void onPLayLayoutClicked(View v) {
-        tabs.setVisibility(View.GONE);
-        pager.setVisibility(View.GONE);
-        mediaPlayerFragment.setSong(songToPlay);
-        mediaPlayerFragment.showMediaPlayerLayout();
-
-    }
-
-    @Override
-    public void play() {
-        final int mediaPlayerState = playerService.getMediaPlayerState();
-        final String action;
-        if (mediaPlayerState != AppMediaPlayer.STATE_STARTED) {
-            action = Constant.ACTION_SONG_STARTED;
-            playerService.play();
-        } else {
-            mediaPlayerFragment.updatePlaybackButton(Constant.ACTION_SONG_PAUSE);
-            action = Constant.ACTION_SONG_PAUSE;
-            playerService.pause();
-        }
-
-        if (mediaPlayerFragment != null) {
-            mediaPlayerFragment.updatePlaybackButton(action);
-        }
-
-        updatePlaybackButton(action);
-    }
-
-    @Override
-    public void next() {
-        playerService.next();
-    }
-
-    @Override
-    public void previous() {
-        playerService.previous();
-    }
-
-    @Override
-    public void seekTo(int progress) {
-        playerService.seekTo(progress);
-    }
-
-    public void updatePlaybackButton(String action) {
-        final boolean toPlay;
-        if (action.equals(Constant.ACTION_SONG_PAUSE)) {
-            mediaPlayerFragment.getPlayback().setImageBitmap(Util.getBitmap(this, R.mipmap.uamp_ic_play_arrow_white_24dp));
-            toPlay = false;
-        } else {
-            mediaPlayerFragment.getPlayback().setImageBitmap(Util.getBitmap(this, R.mipmap.uamp_ic_pause_white_24dp));
-            toPlay = true;
-        }
-
-        if (mediaPlayerFragment != null) {
-            Log.d(TAG, "Updating mediaPlayerFragment playBackButton");
-            mediaPlayerFragment.updatePlaybackButton(action);
-        }
-        updateEqualizer(toPlay);
-    }
-
-    public void updateEqualizer(boolean toPlay) {
-        if (toPlay) {
-            lastSelectedEqualizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
-            lastSelectedEqualizer.getBackground().setTint(Color.parseColor("#3F51B5"));
-            ((AnimationDrawable) lastSelectedEqualizer.getBackground()).start();
-        } else {
-            lastSelectedEqualizer.setBackgroundResource(R.drawable.ic_equalizer_white_36dp);
-            lastSelectedEqualizer.getBackground().setTint(Color.GRAY);
-            ((AnimationDrawable) lastSelectedEqualizer.getBackground()).stop();
-        }
-    }
-
     @Override
     public void onBackPressed() {
         tabs.setVisibility(View.VISIBLE);
         pager.setVisibility(View.VISIBLE);
         mediaPlayerFragment.showPlayBackLayout();
 //        super.onBackPressed();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Bind to Service
-            Intent serviceIntent = new Intent(this, MediaPlayerService.class);
-            bindService(serviceIntent, this, Context.BIND_AUTO_CREATE);
-            startService(serviceIntent);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // Unbind from the service
-        if (isServiceBound) {
-            unbindService(this);
-        }
-    }
-
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-        MediaPlayerService.PlayerServiceBinder binder = (MediaPlayerService.PlayerServiceBinder) service;
-        playerService = binder.getService();
-        playerService.setStoppingTimeInterval(stoppingTimeInterval);
-        playerService.setPlayingTimeInterval(playingTimeInterval);
-//        playerService.setSelectedSongs(selectedSongs);
-        playerService.setCurrentSong(songToPlay);
-        playerService.setCurrentSongPosition(currentSongPosition);
-        playerService.setHandler(playerHandler);
-        isServiceBound = true;
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {
-        playerService = null;
-        isServiceBound = false;
     }
 }

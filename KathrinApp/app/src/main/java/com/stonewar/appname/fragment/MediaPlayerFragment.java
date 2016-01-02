@@ -21,8 +21,7 @@ import com.stonewar.appname.util.Util;
 import java.util.concurrent.TimeUnit;
 
 public class MediaPlayerFragment extends Fragment {
-
-
+    
     private static final String TAG = MediaPlayerFragment.class.getName();
 
     public interface IMediaPlayerFragmentInteractionListener {
