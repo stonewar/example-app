@@ -73,7 +73,7 @@ public class MainActivity extends AbstractBaseActivity {
         }
 
         Intent intent = new Intent(this, TimeIntervalActivity.class);
-        intent.putParcelableArrayListExtra(Constant.SELECTED_SONGS, (ArrayList<? extends Parcelable>) selectedSongs);
+        intent.putParcelableArrayListExtra(Constant.SELECTED_TRACKS, (ArrayList<? extends Parcelable>) selectedSongs);
         startActivity(intent);
     }
 

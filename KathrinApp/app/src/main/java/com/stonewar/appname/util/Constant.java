@@ -5,7 +5,7 @@ package com.stonewar.appname.util;
  */
 public class Constant {
 
-    public static final String SELECTED_SONGS = "SELECTED_SONGS";
+    public static final String SELECTED_TRACKS = "SELECTED_TRACKS";
 
     public static final String SONG_CALL_BACK = "SONG_CALL_BACK";
 
@@ -14,7 +14,7 @@ public class Constant {
     public static final String STOPPING_TIME_INTERVAL = "STOPPING_TIME_INTERVAL";
     public static final String PLAYING_TIME_INTERVAL = "PLAYING_TIME_INTERVAL";
 
-    public static final String PLAYING_SONG = "PLAYING_SONG";
+    public static final String PLAYING_TRACK = "PLAYING_TRACK";
     public static final String TIME_ELAPSED = "TIME_ELAPSED";
     public static final String SONG_DURATION = "SONG_DURATION";
 

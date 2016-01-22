@@ -23,7 +23,7 @@ public interface IMediaPlayerController {
 //
 //    void updatePlaybackButton(String action);
 //
-//    void setSong(Track song);
+//    void setTrack(Track song);
 
 //    void setSongDuration(int songDuration);
 //

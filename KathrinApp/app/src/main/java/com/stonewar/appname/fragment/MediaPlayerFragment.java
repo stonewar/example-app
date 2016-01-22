@@ -58,7 +58,7 @@ public class MediaPlayerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if (arguments != null) {
-             songToPlay = arguments.getParcelable(Constant.PLAYING_SONG);
+             songToPlay = arguments.getParcelable(Constant.PLAYING_TRACK);
         }
     }
 
@@ -178,7 +178,7 @@ public class MediaPlayerFragment extends Fragment {
         }
     }
 
-    public void setSong(Track song) {
+    public void setTrack(Track song) {
         songToPlay = song;
         songArtwork.setImageBitmap(songToPlay.getArtWork());
         imageSong.setImageBitmap(songToPlay.getArtWork());

@@ -1,16 +1,10 @@
 package com.stonewar.appname.activity;
 
 import android.app.ActivityOptions;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -19,20 +13,17 @@ import android.widget.LinearLayout;
 import android.graphics.drawable.AnimationDrawable;
 
 import com.stonewar.appname.R;
-import com.stonewar.appname.common.AbstractBaseActivity;
 import com.stonewar.appname.common.AbstractMediaPlayerActivity;
 import com.stonewar.appname.common.AbstractViewPagerFragment;
 import com.stonewar.appname.adapter.ViewPagerAdapter;
 import com.stonewar.appname.common.IRowViewPagerInteractionListener;
-import com.stonewar.appname.fragment.MediaPlayerFragment;
 import com.stonewar.appname.googlecode.SlidingTabLayout;
 import com.stonewar.appname.model.Album;
 import com.stonewar.appname.model.Track;
-import com.stonewar.appname.service.MediaPlayerService;
-import com.stonewar.appname.util.AppMediaPlayer;
 import com.stonewar.appname.util.Constant;
 import com.stonewar.appname.util.Factory;
-import com.stonewar.appname.util.Util;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main2Activity extends AbstractMediaPlayerActivity implements IRowViewPagerInteractionListener {
@@ -48,9 +39,6 @@ public class Main2Activity extends AbstractMediaPlayerActivity implements IRowVi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        playingTimeInterval = getIntent().getExtras().getInt(Constant.PLAYING_TIME_INTERVAL);
-        stoppingTimeInterval = getIntent().getExtras().getInt(Constant.STOPPING_TIME_INTERVAL);
 
         AbstractViewPagerFragment[] viewPagerFragments = new AbstractViewPagerFragment[3];
         for (int i = 0; i < viewPagerFragments.length; i++)
@@ -89,7 +77,7 @@ public class Main2Activity extends AbstractMediaPlayerActivity implements IRowVi
     public void onPLayLayoutClicked(View v) {
         tabs.setVisibility(View.GONE);
         pager.setVisibility(View.GONE);
-        mediaPlayerFragment.setSong(songToPlay);
+        mediaPlayerFragment.setTrack(currentTrack);
         mediaPlayerFragment.showMediaPlayerLayout();
 
     }
@@ -109,12 +97,13 @@ public class Main2Activity extends AbstractMediaPlayerActivity implements IRowVi
 
     @Override
     public void selectedTrack(View v, Track song, List<Track> tracks) {
-        songToPlay = song;
+        currentTrack = song;
         playerService.stop();
-        playerService.setCurrentSong(songToPlay);
-        playerService.setSelectedSongs(tracks);
+        playerService.setCurrentTrack(currentTrack);
+        selectedTracks = tracks;
+        playerService.setSelectedTracks(selectedTracks);
         playBackFragmentContainer.setVisibility(View.VISIBLE);
-        mediaPlayerFragment.setSong(song);
+        mediaPlayerFragment.setTrack(song);
 
         ImageView equalizer = (ImageView) v.findViewById(R.id.tab_title_equalizer_image);
         if (this.lastSelectedEqualizer != null) {
@@ -131,22 +120,27 @@ public class Main2Activity extends AbstractMediaPlayerActivity implements IRowVi
 
     @Override
     public void selectedAlbum(View v, Album album) {
-        for(Track t: album.getTrackList()){
-            Log.d(TAG, "Track Title: "+t.getTitle());
-            Log.d(TAG, "Track AlbumTitle: "+t.getAlbumTitle());
-            Log.d(TAG, "Track Author: "+t.getAuthor());
-            Log.d(TAG, "Track Duration: "+t.getDuration());
-        }
 
         ImageView albumImage = (ImageView) v.findViewById(R.id.tab_album_image_song);
         List<Track> tracks = album.getTrackList();
-        for(Track t : tracks)
+        for (Track t : tracks)
             t.setArtWork(null);
 
         Intent intent = new Intent(this, AlbumArtistActivity.class);
         intent.putExtra(Constant.ALBUM, album);
-        songToPlay.setArtWork(null);
-        intent.putExtra(Constant.PLAYING_SONG, songToPlay);
+
+        if (currentTrack != null) {
+            currentTrack.setArtWork(null);
+        }
+
+        for (Track t : selectedTracks)
+            t.setArtWork(null);
+
+        intent.putExtra(Constant.PLAYING_TRACK, currentTrack);
+        intent.putParcelableArrayListExtra(Constant.SELECTED_TRACKS, (ArrayList<? extends Parcelable>) selectedTracks);
+        intent.putExtra(Constant.PLAYING_TIME_INTERVAL, playingTimeInterval);
+        intent.putExtra(Constant.STOPPING_TIME_INTERVAL, stoppingTimeInterval);
+
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, albumImage, "photo");
         startActivity(intent, options.toBundle());
     }

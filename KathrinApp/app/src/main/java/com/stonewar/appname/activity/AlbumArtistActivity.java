@@ -1,13 +1,9 @@
 package com.stonewar.appname.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,11 +13,9 @@ import android.widget.LinearLayout;
 import com.stonewar.appname.R;
 import com.stonewar.appname.adapter.AlbumArtistAdapter;
 import com.stonewar.appname.common.AbstractMediaPlayerActivity;
-import com.stonewar.appname.fragment.MediaPlayerFragment;
 import com.stonewar.appname.googlecode.DividerItemDecoration;
 import com.stonewar.appname.manager.TrackManager;
 import com.stonewar.appname.model.Album;
-import com.stonewar.appname.model.Track;
 import com.stonewar.appname.util.Constant;
 
 public class AlbumArtistActivity extends AbstractMediaPlayerActivity {
@@ -39,16 +33,21 @@ public class AlbumArtistActivity extends AbstractMediaPlayerActivity {
         albumArtistLayout = (CoordinatorLayout) findViewById(R.id.album_artist);
         playBackFragmentContainer = (LinearLayout) findViewById(R.id.play_back_fragment_container);
 
-        Album album = getIntent().getParcelableExtra(Constant.ALBUM);
+        Intent intent = getIntent();
+
+        Album album = intent.getParcelableExtra(Constant.ALBUM);
         ImageView artistOrArtworkImg = (ImageView) findViewById(R.id.album_or_author_image);
         Bitmap artistOrArtwork = TrackManager.findArtworkById(getContentResolver(), this, album.getTrackList().get(0).getId());
         artistOrArtworkImg.setImageBitmap(artistOrArtwork);
 
-        songToPlay = getIntent().getParcelableExtra(Constant.PLAYING_SONG);
+        currentTrack = intent.getParcelableExtra(Constant.PLAYING_TRACK);
+        selectedTracks = intent.getParcelableArrayListExtra(Constant.SELECTED_TRACKS);
 
-        if (songToPlay != null) {
+        if (currentTrack != null) {
+            Bitmap artwork = TrackManager.findArtworkById(getContentResolver(), AlbumArtistActivity.this, currentTrack.getId());
+            currentTrack.setArtWork(artwork);
             playBackFragmentContainer.setVisibility(View.VISIBLE);
-            mediaPlayerFragment.setSong(songToPlay);
+            mediaPlayerFragment.setTrack(currentTrack);
 
 //            ImageView equalizer = (ImageView) v.findViewById(R.id.tab_title_equalizer_image);
 //            if (this.lastSelectedEqualizer != null) {
@@ -92,7 +91,7 @@ public class AlbumArtistActivity extends AbstractMediaPlayerActivity {
     @Override
     public void onPLayLayoutClicked(View v) {
         albumArtistLayout.setVisibility(View.GONE);
-        mediaPlayerFragment.setSong(songToPlay);
+        mediaPlayerFragment.setTrack(currentTrack);
         mediaPlayerFragment.showMediaPlayerLayout();
     }
 

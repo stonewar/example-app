@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.stonewar.appname.R;
@@ -226,7 +225,7 @@ public class MediaPlayerService extends Service implements IMediaPlayerControlle
     private void handleSongChanged() {
         Bundle data = new Bundle();
         data.putString(Constant.ACTION, Constant.ACTION_SONG_CHANGE);
-        data.putParcelable(Constant.PLAYING_SONG, currentSong);
+        data.putParcelable(Constant.PLAYING_TRACK, currentSong);
         Message message = playerHandler.obtainMessage();
         message.setData(data);
         message.sendToTarget();
@@ -340,15 +339,15 @@ public class MediaPlayerService extends Service implements IMediaPlayerControlle
         this.stoppingTimeInterval = stoppingTimeInterval;
     }
 
-    public void setSelectedSongs(List<Track> selectedSongs) {
+    public void setSelectedTracks(List<Track> selectedSongs) {
         this.selectedSongs = selectedSongs;
     }
 
-    public void setCurrentSongPosition(int position) {
+    public void setCurrentTrackPosition(int position) {
         this.currentSongPosition = position;
     }
 
-    public void setCurrentSong(Track currentSong) {
+    public void setCurrentTrack(Track currentSong) {
         this.currentSong = currentSong;
     }
 

@@ -4,15 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+
 import com.stonewar.appname.R;
 import com.stonewar.appname.fragment.MediaPlayerFragment;
 import com.stonewar.appname.model.Track;
@@ -21,6 +19,8 @@ import com.stonewar.appname.util.AppMediaPlayer;
 import com.stonewar.appname.util.Constant;
 import com.stonewar.appname.util.Factory;
 import com.stonewar.appname.util.Util;
+
+import java.util.List;
 
 /**
  * Created by yandypiedra on 02.01.16.
@@ -34,20 +34,21 @@ public abstract class AbstractMediaPlayerActivity extends AbstractBaseActivity
     protected MediaPlayerService playerService;
     protected boolean isServiceBound;
 
-    protected int currentSongPosition;
+    protected int currentTrackPosition;
     protected int playingTimeInterval;
     protected int stoppingTimeInterval;
 
     protected Handler playerHandler;
     protected MediaPlayerFragment mediaPlayerFragment;
-    protected Track songToPlay;
+    protected Track currentTrack;
+    protected List<Track> selectedTracks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//
-//        playingTimeInterval = getIntent().getExtras().getInt(Constant.PLAYING_TIME_INTERVAL);
-//        stoppingTimeInterval = getIntent().getExtras().getInt(Constant.STOPPING_TIME_INTERVAL);
+
+        playingTimeInterval = getIntent().getExtras().getInt(Constant.PLAYING_TIME_INTERVAL);
+        stoppingTimeInterval = getIntent().getExtras().getInt(Constant.STOPPING_TIME_INTERVAL);
 
         AbstractViewPagerFragment[] viewPagerFragments = new AbstractViewPagerFragment[3];
         for (int i = 0; i < viewPagerFragments.length; i++)
@@ -79,7 +80,7 @@ public abstract class AbstractMediaPlayerActivity extends AbstractBaseActivity
 
                 } else if (action.equals(Constant.ACTION_SONG_CHANGE)) {
                     if (mediaPlayerFragment != null) {
-                        mediaPlayerFragment.setSong((Track) bundle.getParcelable(Constant.PLAYING_SONG));
+                        mediaPlayerFragment.setTrack((Track) bundle.getParcelable(Constant.PLAYING_TRACK));
 //                        isSongDurationSet = false;
                     }
                 } else {
@@ -178,9 +179,9 @@ public abstract class AbstractMediaPlayerActivity extends AbstractBaseActivity
         playerService = binder.getService();
         playerService.setStoppingTimeInterval(stoppingTimeInterval);
         playerService.setPlayingTimeInterval(playingTimeInterval);
-//        playerService.setSelectedSongs(selectedSongs);
-        playerService.setCurrentSong(songToPlay);
-        playerService.setCurrentSongPosition(currentSongPosition);
+        playerService.setSelectedTracks(selectedTracks);
+        playerService.setCurrentTrack(currentTrack);
+        playerService.setCurrentTrackPosition(currentTrackPosition);
         playerService.setHandler(playerHandler);
         isServiceBound = true;
     }

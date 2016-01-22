@@ -59,7 +59,7 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
 
         //Get the selected intervals and music
         Intent intent = getIntent();
-        selectedSongs = intent.getParcelableArrayListExtra(Constant.SELECTED_SONGS);
+        selectedSongs = intent.getParcelableArrayListExtra(Constant.SELECTED_TRACKS);
         playingTimeInterval = Integer.valueOf(intent.getStringExtra(Constant.PLAYING_TIME_INTERVAL));
         stoppingTimeInterval = Integer.valueOf(intent.getStringExtra(Constant.STOPPING_TIME_INTERVAL));
         songToPlay = selectedSongs.get(currentSongPosition);
@@ -153,7 +153,7 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
                     setSongProgress((int) timeElapsed);
 
                 } else if (action.equals(Constant.ACTION_SONG_CHANGE)) {
-                    setSong((Track) bundle.getParcelable(Constant.PLAYING_SONG));
+                    setSong((Track) bundle.getParcelable(Constant.PLAYING_TRACK));
                     isSongDurationSet = false;
                 } else {
                     updatePlaybackButton(action);
@@ -236,9 +236,9 @@ public class MediaPlayerActivity extends AbstractBaseActivity implements Service
         playerService = binder.getService();
         playerService.setStoppingTimeInterval(stoppingTimeInterval);
         playerService.setPlayingTimeInterval(playingTimeInterval);
-        playerService.setSelectedSongs(selectedSongs);
-        playerService.setCurrentSong(songToPlay);
-        playerService.setCurrentSongPosition(currentSongPosition);
+        playerService.setSelectedTracks(selectedSongs);
+        playerService.setCurrentTrack(songToPlay);
+        playerService.setCurrentTrackPosition(currentSongPosition);
         playerService.setHandler(playerHandler);
         isServiceBound = true;
     }
